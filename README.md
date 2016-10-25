@@ -1,6 +1,6 @@
 # Swiss Archival Institutions alod.ch-site
 
-This provides an [aLOD](http://github.com/zazuko/alod) [alod.ch](http://data.alod.ch). 
+This provides an [aLOD](http://github.com/zazuko/alod) instance for [data.alod.ch](http://data.alod.ch). 
 
 ## Requirements
 
