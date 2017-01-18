@@ -1,0 +1,24 @@
+{
+  "baseConfig": "trifid:config-sparql.json",
+  "sparqlEndpointUrl": "http://data.admin.ch:3030/alod/sparql",
+  "staticFiles": {
+    "rendererFiles": {
+      "path": "/",
+      "folder": "renderer:public"
+    },
+    "saiFiles": {
+      "path": "/",
+      "folder": "cwd:data/public"
+    }
+  },
+  "handler": {
+    "options": {
+//      "containerGraphQuery": "CONSTRUCT { ?s a ?o ; <http://schema.org/name> ?name . } WHERE { ?s a ?o ; <http://schema.org/name> ?name . MINUS { ?s <http://purl.org/dc/terms/isVersionOf> ?p } FILTER REGEX(STR(?s), \"^${iri}\") }"
+    }
+  },
+  "renderer": {
+    "module": "trifid-renderer-simple",
+    "template": "cwd:data/template.html",
+    "vocab": "renderer:vocab.json"
+  }
+}

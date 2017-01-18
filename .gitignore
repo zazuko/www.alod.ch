@@ -1,5 +1,5 @@
 .idea
 .DS_Store
-data/graph.ttl
 node_modules
 npm-debug.log
+data/public/search/

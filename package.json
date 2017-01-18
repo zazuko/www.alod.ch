@@ -1,0 +1,18 @@
+{
+  "name": "swiss-archival-institutions",
+  "version": "1.0.0",
+  "description": "Zazuko aLOD is a software to manage archival finding aids using Linked Data",
+  "main": "index.js",
+  "dependencies": {
+    "trifid": "^1.0.1",
+    "trifid-renderer-simple": "0.0.7",
+    "zack-search": "git://github.com/zazuko/zack-search.git#dev"
+  },
+  "devDependencies": {},
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "mkdir -p data/public/search && cp -r node_modules/zack-search/dist/* data/public/search",
+    "install": "npm run build",
+    "start": "trifid --config config.sai.json"
+  }
+}
