@@ -13,6 +13,7 @@
   "scripts": {
     "build": "mkdir -p data/public/search && cp -r node_modules/zack-search/dist/* data/public/search",
     "install": "npm run build",
-    "start": "trifid --config config.sai.json"
+    "start": "trifid --config config.sai.json",
+    "start-local": "trifid --config config.sai.dev.bs.json"
   }
 }

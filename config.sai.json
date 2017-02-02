@@ -13,7 +13,7 @@
   },
   "handler": {
     "options": {
-//      "containerGraphQuery": "CONSTRUCT { ?s a ?o ; <http://schema.org/name> ?name . } WHERE { ?s a ?o ; <http://schema.org/name> ?name . MINUS { ?s <http://purl.org/dc/terms/isVersionOf> ?p } FILTER REGEX(STR(?s), \"^${iri}\") }"
+      "resourceExistsQuery": "ASK { GRAPH ?g { <${iri}> ?p ?o }}"
     }
   },
   "renderer": {
