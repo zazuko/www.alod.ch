@@ -1,4 +1,4 @@
 apps:
   - script   : ./node_modules/.bin/trifid
-    name     : 'swiss-archival-institutions'
-    args     : '--config config.sai.json'
+    name     : 'alod'
+    args     : '--config config.alod.json'
