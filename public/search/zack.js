@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Zack = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var asn1 = exports;
 
 asn1.bignum = require('bn.js');
@@ -10880,19 +10880,19 @@ Rand.prototype.generate = function generate(len) {
   return this._rand(len);
 };
 
-if (typeof window === 'object') {
-  if (window.crypto && window.crypto.getRandomValues) {
+if (typeof self === 'object') {
+  if (self.crypto && self.crypto.getRandomValues) {
     // Modern browsers
     Rand.prototype._rand = function _rand(n) {
       var arr = new Uint8Array(n);
-      window.crypto.getRandomValues(arr);
+      self.crypto.getRandomValues(arr);
       return arr;
     };
-  } else if (window.msCrypto && window.msCrypto.getRandomValues) {
+  } else if (self.msCrypto && self.msCrypto.getRandomValues) {
     // IE
     Rand.prototype._rand = function _rand(n) {
       var arr = new Uint8Array(n);
-      window.msCrypto.getRandomValues(arr);
+      self.msCrypto.getRandomValues(arr);
       return arr;
     };
   } else {
@@ -10902,7 +10902,7 @@ if (typeof window === 'object') {
     };
   }
 } else {
-  // Node.js or Web worker
+  // Node.js or Web worker with no crypto support
   try {
     var crypto = require('crypto');
 
@@ -35990,7 +35990,7 @@ defineCurve('curve25519', {
   prime: 'p25519',
   p: '7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed',
   a: '76d06',
-  b: '0',
+  b: '1',
   n: '1000000000000000 0000000000000000 14def9dea2f79cd6 5812631a5cf5d3ed',
   hash: hash.sha256,
   gRed: false,
@@ -36300,6 +36300,9 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 'use strict';
 
 var BN = require('bn.js');
+var elliptic = require('../../elliptic');
+var utils = elliptic.utils;
+var assert = utils.assert;
 
 function KeyPair(ec, options) {
   this.ec = ec;
@@ -36380,6 +36383,15 @@ KeyPair.prototype._importPrivate = function _importPrivate(key, enc) {
 
 KeyPair.prototype._importPublic = function _importPublic(key, enc) {
   if (key.x || key.y) {
+    // Montgomery points only have an `x` coordinate.
+    // Weierstrass/Edwards points on the other hand have both `x` and
+    // `y` coordinates.
+    if (this.ec.curve.type === 'mont') {
+      assert(key.x, 'Need x coordinate');
+    } else if (this.ec.curve.type === 'short' ||
+               this.ec.curve.type === 'edwards') {
+      assert(key.x && key.y, 'Need both x and y coordinate');
+    }
     this.pub = this.ec.curve.point(key.x, key.y);
     return;
   }
@@ -36405,7 +36417,7 @@ KeyPair.prototype.inspect = function inspect() {
          ' pub: ' + (this.pub && this.pub.inspect()) + ' >';
 };
 
-},{"bn.js":17}],85:[function(require,module,exports){
+},{"../../elliptic":76,"bn.js":17}],85:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -37913,23 +37925,23 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "/Users/michael/Sandbox/swiss-archival-institutions/node_modules/browserify-sign"
+      "/Users/michael/Sandbox/alod/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
-  "_id": "elliptic@6.3.2",
+  "_id": "elliptic@6.3.3",
   "_inCache": true,
   "_location": "/elliptic",
-  "_nodeVersion": "6.3.0",
+  "_nodeVersion": "7.0.0",
   "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/elliptic-6.3.2.tgz_1473938837205_0.3108903462998569"
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/elliptic-6.3.3.tgz_1486422837740_0.10658654430881143"
   },
   "_npmUser": {
     "name": "indutny",
     "email": "fedor@indutny.com"
   },
-  "_npmVersion": "3.10.3",
+  "_npmVersion": "3.10.8",
   "_phantomChildren": {},
   "_requested": {
     "raw": "elliptic@^6.0.0",
@@ -37944,11 +37956,11 @@ module.exports={
     "/browserify-sign",
     "/create-ecdh"
   ],
-  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.2.tgz",
-  "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.3.tgz",
+  "_shasum": "5482d9646d54bcb89fd7d994fc9e2e9568876e3f",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/Users/michael/Sandbox/swiss-archival-institutions/node_modules/browserify-sign",
+  "_where": "/Users/michael/Sandbox/alod/node_modules/browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -37968,6 +37980,7 @@ module.exports={
     "coveralls": "^2.11.3",
     "grunt": "^0.4.5",
     "grunt-browserify": "^5.0.0",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-connect": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
@@ -37980,13 +37993,13 @@ module.exports={
   },
   "directories": {},
   "dist": {
-    "shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
-    "tarball": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.2.tgz"
+    "shasum": "5482d9646d54bcb89fd7d994fc9e2e9568876e3f",
+    "tarball": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.3.tgz"
   },
   "files": [
     "lib"
   ],
-  "gitHead": "cbace4683a4a548dc0306ef36756151a20299cd5",
+  "gitHead": "63aee8d697e9b7fac37ece24222029117a890a7e",
   "homepage": "https://github.com/indutny/elliptic",
   "keywords": [
     "EC",
@@ -38017,7 +38030,7 @@ module.exports={
     "unit": "istanbul test _mocha --reporter=spec test/index.js",
     "version": "grunt dist && git add dist/"
   },
-  "version": "6.3.2"
+  "version": "6.3.3"
 }
 
 },{}],93:[function(require,module,exports){
@@ -68665,289 +68678,89 @@ function extend() {
 }
 
 },{}],323:[function(require,module,exports){
-module.exports = 'PREFIX : <http://voc.zazuko.com/zack#>\nPREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX  text: <http://jena.apache.org/text#>\nPREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX  skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>\n\nCONSTRUCT {\n  _:b0 :numberOfResults ?count.\n  _:b0 :queryStart ?querystart.\n  _:b0 :queryEnd ?queryend.\n}\nWHERE {\n  { \n    #provides the overall count of all documents for the query\n    SELECT (COUNT(?sub) as ?count) {\n      ${textmatch}\n      ${filters}\n    }\n  }\n  UNION\n  {\n    #provides the first and last available document timestamp for the query\n    SELECT (MIN(?resourcestart) as ?querystart) (MAX(?resourceend) as ?queryend) {\n      GRAPH <http://data.alod.ch/graph/inference-supertitle> {\n        (?sub ?score ?literal) text:query (skos:hiddenLabel \"${searchString}\") .\n      }${filters}\n      GRAPH ?t {\n        OPTIONAL {\n          ?sub <http://www.w3.org/2006/time#intervalStarts> ?resourceend .\n        }\n        OPTIONAL {\n          ?sub <http://www.w3.org/2006/time#intervalStarts> ?resourcestart .  \n        }\n        #check if a valid date can be build, either xsd:date or xsd:gYear, ignores actual datatype\n        FILTER( datatype(xsd:date(?resourcestart)) = xsd:date || datatype(xsd:date(CONCAT(?resourcestart,\"-01-01\"))) = xsd:date)\n        FILTER( datatype(xsd:date(?resourceend)) = xsd:date || datatype(xsd:date(CONCAT(?resourceend,\"-01-01\"))) = xsd:date)\n      }\n    }\n  }\n}\n'
+module.exports = 'PREFIX : <http://voc.zazuko.com/zack#>\nPREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX  text: <http://jena.apache.org/text#>\nPREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX  skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>\n\nCONSTRUCT {\n  _:b0 :numberOfResults ?count.\n  _:b0 :queryStart ?querystart.\n  _:b0 :queryEnd ?queryend.\n}\nWHERE {\n  { \n    #provides the overall count of all documents for the query\n    SELECT (COUNT(?sub) as ?count) {\n      ${textmatch}\n      ${filters}\n    }\n  }\n  UNION\n  {\n    #provides the first and last available document timestamp for the query\n    SELECT (MIN(?resourcestart) as ?querystart) (MAX(?resourceend) as ?queryend) {\n      ${textmatch}\n      ${filters}\n      OPTIONAL {\n        ?sub <http://www.w3.org/2006/time#intervalStarts> ?resourceend .\n      }\n      OPTIONAL {\n        ?sub <http://www.w3.org/2006/time#intervalStarts> ?resourcestart .  \n      }\n    }\n  }\n}\n'
 },{}],324:[function(require,module,exports){
-module.exports = 'PREFIX : <http://voc.zazuko.com/zack#>\nPREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX  text: <http://jena.apache.org/text#>\nPREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX  skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX time: <http://www.w3.org/2006/time#>\n\nSELECT (COUNT(?sub) as ?histo) ?bucket ?bucket_start ?bucket_end\nWHERE {\n  ${textmatch}\n\n  GRAPH ?g {\n    ?sub time:intervalStarts ?start_ .\n    FILTER( datatype(xsd:date(?start_)) = xsd:date || datatype(xsd:date(CONCAT(?start_,\"-01-01\"))) = xsd:date)\n    BIND ( IF(STRLEN(xsd:string(?start_)) = 4, xsd:date(CONCAT(?start_,\"-01-01\")), xsd:date(?start_)) AS ?start )\n\n    ${filters}\n  }\n\n  {\n    SELECT ( MIN(?_start) as ?min ) ( COUNT(?sub) as ?count ) ( ( day( MAX(?_start) - MIN(?_start) ) / ${width} ) as ?interval )\n    WHERE {\n      ${textmatch}\n\n      GRAPH ?g {\n        ?sub time:intervalStarts ?_start_ .\n        FILTER( datatype(xsd:date(?_start_)) = xsd:date || datatype(xsd:date(CONCAT(?_start_,\"-01-01\"))) = xsd:date)\n        BIND ( IF(STRLEN(xsd:string(?_start_)) = 4, xsd:date(CONCAT(?_start_,\"-01-01\")), xsd:date(?_start_)) AS ?_start )\n\n        ${filters}\n      }\n    }\n  }\n\n  BIND (floor((day(?start - ?min)/?interval)) AS ?bucket)\n  BIND ((?min + xsd:duration(concat(\'P\',xsd:string(floor(floor((day(?start - ?min)/?interval))*?interval)),\'D\'))) AS ?bucket_start )\n  BIND ((?min + xsd:duration(concat(\'P\',xsd:string(floor(floor(((day(?start - ?min)+?interval)/?interval))*?interval)),\'D\'))) AS ?bucket_end )\n\n}\n\nGROUP BY ?bucket ?bucket_start ?bucket_end\nORDER BY ?bucket\n'
+module.exports = 'PREFIX : <http://voc.zazuko.com/zack#>\nPREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX  text: <http://jena.apache.org/text#>\nPREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX  skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX time: <http://www.w3.org/2006/time#>\n\nSELECT (COUNT(?sub) as ?histo) ?bucket ?bucket_start ?bucket_end\nWHERE {\n  ${textmatch}\n\n  GRAPH ?g {\n    ?sub time:intervalStarts ?start_ .\n    FILTER( datatype(xsd:date(?start_)) = xsd:date || datatype(xsd:date(CONCAT(?start_,\"-01-01\"))) = xsd:date)\n    BIND ( IF(STRLEN(xsd:string(?start_)) = 4, xsd:date(CONCAT(?start_,\"-01-01\")), xsd:date(?start_)) AS ?start )\n\n    ${filters}\n  }\n\n  {\n    SELECT ( MIN(?_start) as ?min ) ( COUNT(?sub) as ?count ) ( ( MAX(?_start) - MIN(?_start) ) as ?range ) \n    WHERE {\n      ${textmatch}\n\n      GRAPH ?g {\n        ?sub time:intervalStarts ?_start_ .\n        FILTER( datatype(xsd:date(?_start_)) = xsd:date || datatype(xsd:date(CONCAT(?_start_,\"-01-01\"))) = xsd:date)\n        BIND ( IF(STRLEN(xsd:string(?_start_)) = 4, xsd:date(CONCAT(?_start_,\"-01-01\")), xsd:date(?_start_)) AS ?_start )\n\n        ${filters}\n      }\n    }\n  }\n\n  # calculate how many days the start days span\n  BIND (xsd:integer(strbefore(strafter(str(?range),\"P\"), \"D\")) as ?rangeDays)\n\n  # the number of of days in each interval for a fixed number of intervals\n#  BIND (floor(?rangeDays / ${width}) AS ?interval) \n  BIND (floor(?rangeDays / 10) AS ?interval) \n\n  # the number of days from the min date to start day\n  BIND (xsd:integer(strbefore(strafter(str(?start - ?min),\"P\"), \"D\")) as ?startDays)\n\n  # index of the bucket for this start date\n  BIND (floor(?startDays/?interval) AS ?bucket) \n\n  # bucket start and end date\n  BIND (?min + (\"P1D\"^^xsd:dayTimeDuration * ?interval * ?bucket) AS ?bucket_start ) \n  BIND (?min + (\"P1D\"^^xsd:dayTimeDuration * ?interval * (?bucket +1)) AS ?bucket_end ) \n\n}\n\nGROUP BY ?bucket ?bucket_start ?bucket_end\nORDER BY ?bucket\n'
 },{}],325:[function(require,module,exports){
 module.exports = 'PREFIX : <http://voc.zazuko.com/zack#>\nPREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX  text: <http://jena.apache.org/text#>\nPREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX  skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>\n\nCONSTRUCT {\n  :query :result ?sub .\n  ?sub a :resultItem .\n  ?sub ?pred ?obj .\n  ?sub :score ?score .\n} WHERE {\n  {\n    SELECT  ?sub ?score WHERE {\n      ${textmatch}\n      ${filters}\n    }\n    OFFSET ${offset}\n    LIMIT ${limit}\n  }\n  GRAPH ?g {\n    ?sub ?pred ?obj .\n  }\n}\n'
 },{}],326:[function(require,module,exports){
-module.exports = 'GRAPH <http://data.alod.ch/graph/inference-supertitle> {\n  ?sub ?score ?literal .\n}\n'
+module.exports = '?sub skos:hiddenLabel ?l .\n(?l ?score) <tag:stardog:api:property:textMatch> \"${searchString}\" .\n'
 },{}],327:[function(require,module,exports){
-module.exports = 'GRAPH <http://data.alod.ch/graph/inference-supertitle> {\n  (?sub ?score ?literal) text:query (skos:hiddenLabel \"${searchString}\") .\n}\n'
-},{}],328:[function(require,module,exports){
 var Promise = require('bluebird')
-var debounce = require('debounce')
-var filter = require('./filter')
-var renderer = require('./renderer')
 var Event = require('crab-event').Event
 var Histogram = require('./histogram')
 var QueryBuilder = require('./query-builder')
+var ResultList = require('./result-list')
+var Search = require('./search')
 var Timeline = require('./timeline')
-var SparqlSearchResultList = require('sparql-search-result-list')
 
-var app = {}
+function Zack (options) {
+  var self = this
 
-app.options = require('./config')
+  this.options = options
 
-window.app = app
-
-window.onresize = function () {
-  app.events.resize.trigger()
-}
-
-app.events = {
-  fetched: new Event(),
-  fetching: new Event(),
-  filterChange: new Event(),
-  filterDuplicate: new Event(),
-  resize: new Event(),
-  resultMetadata: new Event(),
-  search: new Event()
-}
-
-app.isFetching = 0
-app.renderHistogram = false
-
-app.filters = []
-app.staticFilters = []
-
-function search () {
-  var query = document.getElementById('query').value
-
-  if (query.trim() !== '') {
-    query = query.replace('"', '').trim()
-  } else {
-    query = null
+  this.options.queries = {
+    fusekiSearch: require('../.build/zack-sparql'),
+    fusekiCount: require('../.build/zack-count-sparql'),
+    fusekiHistogram: require('../.build/zack-histogram-sparql'),
+    fusekiTextmatch: require('../.build/zack-textmatch-part-sparql')
   }
 
-  // only use the textmatch SPARQL part if query is not empty
-
-  if (query) {
-    app.queryBuilder.setParts({
-      'textmatch': app.queryTemplates.textmatch
-    })
-  } else {
-    app.queryBuilder.setParts({
-      'textmatch': app.queryTemplates.textmatchDummy
-    })
+  this.events = {
+    fetched: new Event(),
+    fetching: new Event(),
+    resize: new Event()
   }
 
-  app.resultList.search(query)
-}
-
-function resultMetadata (metadata) {
-  document.getElementById('count').innerHTML = metadata.length
-  document.getElementById('scrollArea').scrollTop = 0
-}
-
-function updateTimeline () {
-  app.timeline.render(app.resultList.start, app.resultList.end)
-  app.histogram.clear()
-}
-
-function updateHistogram () {
-  app.histogram.render(app.resultList.query)
-  app.renderHistogram = false
-}
-
-app.updateFilters = function () {
-  var htmlFilters = filter.fromElements(document.querySelectorAll('[data-filter]'), app.events.filterChange.trigger)
-
-  // build filter list from HTML elements and static filters
-  app.filters = htmlFilters.concat(app.staticFilters)
-
-  app.events.filterChange.trigger()
-}
-
-app.removeFilter = function (element) {
-  element.parentNode.removeChild(element)
-
-  app.updateFilters()
-}
-
-app.containsFilter = function (operator, predicate, value, options) {
-  return app.filters.some(function (filter) {
-    return filter.operator === operator &&
-        filter.predicate === predicate &&
-        filter.value === (options.namedNode ? '<' + value + '>' : '"' + value + '"') &&
-        filter.termType === (options.namedNode ? 'NamedNode' : 'Literal') &&
-        filter.propertyPathPrefix === options.propertyPathPrefix &&
-        filter.propertyPathPostfix === options.propertyPathPostfix
-  })
-}
-
-app.addFilter = function (label, operator, predicate, value, options) {
-  if (arguments.length === 1) {
-    var element = arguments[0]
-
-    label = element.getAttribute('data-label') || element.textContent
-    operator = element.getAttribute('data-filterable')
-    predicate = element.getAttribute('data-predicate')
-    value = element.value || element.getAttribute('data-value')
-    options = {
-      namedNode: element.getAttribute('data-named-node') !== null,
-      propertyPathPrefix: element.getAttribute('data-property-path-prefix'),
-      propertyPathPostfix: element.getAttribute('data-property-path-postfix')
-    }
-
-    return app.addFilter(label, operator, predicate, value, options)
+  window.onresize = function () {
+    self.events.resize.trigger()
   }
 
+  this.plugins = []
+  this.plugins.push(new Search())
+  this.plugins.push(new ResultList())
+  this.plugins.push(new Timeline({margin: {top: 40, right: 20, bottom: 0, left: 20}}))
+  this.plugins.push(new Histogram({
+    endpointUrl: this.options.endpointUrl,
+    margin: {top: 0, right: 20, bottom: 0, left: 20}
+  }))
+
+  this.isFetching = 0
+}
+
+Zack.prototype.findPlugin = function (name) {
+  return this.plugins.filter(function (plugin) {
+    return plugin.name === name
+  }).shift()
+}
+
+Zack.prototype.getQuery = function (endpointUrl, id) {
+  return this.options.queries[this.options.endpoints[endpointUrl].queries[id]]
+}
+
+Zack.prototype.initPlugins = function () {
+  var self = this
+
+  // init plugins
+  return Promise.all(this.plugins.map(function (plugin) {
+    return plugin.init(self)
+  }))
+}
+
+Zack.prototype.init = function () {
+  this.queryBuilder = new QueryBuilder()
+
+  return this.initPlugins()
+}
+
+module.exports = Zack
+
+},{"../.build/zack-count-sparql":323,"../.build/zack-histogram-sparql":324,"../.build/zack-sparql":325,"../.build/zack-textmatch-part-sparql":326,"./histogram":329,"./query-builder":330,"./result-list":332,"./search":333,"./timeline":334,"bluebird":16,"crab-event":56}],328:[function(require,module,exports){
+var dragged = null
+
+function filter (operator, predicate, value, options) {
   options = options || {}
 
-  if (app.containsFilter(operator, predicate, value, options)) {
-    app.events.filterDuplicate.trigger({
-      label: label,
-      operator: operator,
-      predicate: predicate,
-      value: value,
-      options: options
-    })
-
-    return
-  }
-
-  var html = '<div data-filter="' + operator + '" ' +
-    'data-predicate="' + predicate + '" ' +
-    (options.propertyPathPrefix ? 'data-property-path-prefix="' + options.propertyPathPrefix + '" ' : '') +
-    (options.propertyPathPostfix ? 'data-property-path-postfix="' + options.propertyPathPostfix + '" ' : '') +
-    'data-value="' + value + '" ' +
-    (options.namedNode ? 'data-named-node ' : '') +
-    'class="filter-item" onclick="app.removeFilter(this)">' + label + '</div>'
-
-  document.getElementById(app.options.filterContainer).innerHTML += html
-
-  app.updateFilters()
-}
-
-function initUi () {
-  // renderer
-  app.renderer = renderer
-  app.events.resultMetadata.on(app.renderer.init)
-
-  // timeline
-  app.timeline = new Timeline({margin: {top: 40, right: 20, bottom: 0, left: 20}})
-
-  app.events.resize.on(updateTimeline)
-  app.events.resultMetadata.on(updateTimeline)
-
-  // histogram
-  app.histogram = new Histogram({
-    endpointUrl: app.options.endpointUrl,
-    margin: {top: 0, right: 20, bottom: 0, left: 20}
-  })
-
-  app.histogram.buildQuery = app.queryBuilder.createBuilder(app.queryTemplates.histogram)
-
-  app.events.resultMetadata.on(function () {
-    app.renderHistogram = true
-  })
-
-  app.events.fetched.on(function () {
-    setTimeout(function () {
-      if (app.renderHistogram && !app.isFetching) {
-        updateHistogram()
-      }
-    }, 1)
-  })
-
-  app.events.resize.on(debounce(updateHistogram, 500))
-
-  // query field
-  document.getElementById('query').onkeyup = debounce(function () {
-    app.events.search.trigger()
-  }, 250)
-
-  app.updateFilters()
-
-  app.events.search.trigger()
-}
-
-function initQueryBuilder () {
-  app.queryBuilder = new QueryBuilder()
-
-  app.queryTemplates = {
-    search: require('../.build/zack-sparql'),
-    count: require('../.build/zack-count-sparql'),
-    histogram: require('../.build/zack-histogram-sparql'),
-    textmatch: require('../.build/zack-textmatch-part-sparql'),
-    textmatchDummy: require('../.build/zack-textmatch-dummy-part-sparql')
-  }
-
-  if (app.options.resultTypes) {
-    app.options.resultTypes.forEach(function (resultType) {
-      app.staticFilters.push({
-        operator: '=',
-        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-        termType: 'NamedNode',
-        variable: 'resultType',
-        value: '<' + resultType + '>'
-      })
-    })
-  }
-
-  return Promise.resolve()
-}
-
-function initResultList () {
-  app.resultList = new SparqlSearchResultList({
-    endpointUrl: app.options.endpointUrl,
-    pageSize: app.options.pageSize,
-    preload: app.options.preload,
-    resultType: 'http://data.archiveshub.ac.uk/def/ArchivalResource',
-    scrollArea: 'scrollArea',
-    contentArea: 'contentArea',
-    dummyResult: '<div class="zack-result"></div>',
-    renderResult: renderer.renderResult,
-    onResultRendered: renderer.postRender,
-    onFetched: app.events.fetched.trigger,
-    onFetching: app.events.fetching.trigger,
-    onResultMetadata: app.events.resultMetadata.trigger
-  })
-
-  // replace default filter query builder methods
-  app.resultList.buildMetadataFilterQuery = app.queryBuilder.createBuilder(app.queryTemplates.count)
-  app.resultList.buildResultFilterQuery = app.queryBuilder.createBuilder(app.queryTemplates.search)
-
-  // connect events
-
-  app.events.fetched.on(function () {
-//    console.log('fetched')
-    app.isFetching--
-  })
-
-  app.events.fetching.on(function () {
-//    console.log('fetching')
-    app.isFetching++
-  })
-
-  app.events.filterChange.on(function () {
-    app.queryBuilder.setFilters(app.filters)
-    app.events.search.trigger()
-  })
-
-  app.events.resultMetadata.on(resultMetadata)
-
-  app.events.search.on(search)
-}
-
-initQueryBuilder().then(function () {
-  return initResultList()
-}).then(function () {
-  return initUi()
-})
-
-},{"../.build/zack-count-sparql":323,"../.build/zack-histogram-sparql":324,"../.build/zack-sparql":325,"../.build/zack-textmatch-dummy-part-sparql":326,"../.build/zack-textmatch-part-sparql":327,"./config":329,"./filter":330,"./histogram":331,"./query-builder":332,"./renderer":333,"./timeline":334,"bluebird":16,"crab-event":56,"debounce":64,"sparql-search-result-list":302}],329:[function(require,module,exports){
-module.exports = {
-  endpointUrl: '/query',
-  pageSize: 20,
-  preload: 80,
-  filterContainer: 'filter-container',
-  resultTypes: ['http://data.archiveshub.ac.uk/def/ArchivalResource']
-}
-
-},{}],330:[function(require,module,exports){
-function filter (operator, predicate, value, options) {
   return {
     operator: operator,
     predicate: predicate,
@@ -68962,12 +68775,12 @@ function filter (operator, predicate, value, options) {
 filter.fromElement = function (element, index, changeCallback) {
   index = index || 0
 
-  var operator = element.getAttribute('data-filter')
+  var operator = element.getAttribute('data-filter') || element.getAttribute('data-filterable')
   var predicate = element.getAttribute('data-predicate')
   var options = {
     propertyPathPrefix: element.getAttribute('data-property-path-prefix'),
     propertyPathPostfix: element.getAttribute('data-property-path-postfix'),
-    termType: element.getAttribute('data-named-node') !== null ? 'NamedNode' : 'Literal',
+    namedNode: element.getAttribute('data-named-node') !== null,
     variable: 'filter' + index
   }
 
@@ -69013,6 +68826,61 @@ filter.fromElements = function (elements, changeCallback) {
   })
 }
 
+filter.toElement = function (label, instance, search) {
+  var element = document.createElement('div')
+
+  // css
+  element.setAttribute('class', 'filter-item')
+
+  // data
+  element.setAttribute('data-filter', instance.operator)
+  element.setAttribute('data-predicate', instance.predicate)
+
+  if (instance.propertyPathPrefix) {
+    element.setAttribute('data-property-path-prefix', instance.propertyPathPrefix)
+  }
+
+  if (instance.propertyPathPostfix) {
+    element.setAttribute('data-property-path-postfix', instance.propertyPathPostfixx)
+  }
+
+  element.setAttribute('data-value', instance.value.slice(1, -1))
+
+  if (instance.termType === 'NamedNode') {
+    element.setAttribute('data-named-node', true)
+  }
+
+  // content
+  element.innerHTML = label
+
+  // events
+  element.addEventListener('click', function () {
+    search.removeFilter(this)
+  })
+
+  element.draggable = true
+
+  element.addEventListener('dragstart', function (event) {
+    dragged = event.target
+  })
+
+  element.addEventListener('dragover', function (event) {
+    event.preventDefault()
+  })
+
+  element.addEventListener('drop', function (event) {
+    console.log(element.attributes['data-value'])
+    console.log(dragged.attributes['data-value'])
+
+    element.setAttribute('data-filter', 'IN')
+    dragged.setAttribute('data-filter', 'IN')
+
+    search.updateFilters()
+  })
+
+  return element
+}
+
 filter.compare = function (a, b) {
   return a.operator === b.operator &&
     a.predicate === b.predicate &&
@@ -69024,8 +68892,9 @@ filter.compare = function (a, b) {
 
 module.exports = filter
 
-},{}],331:[function(require,module,exports){
+},{}],329:[function(require,module,exports){
 var cancelableFetch = require('cancelable-fetch')
+var debounce = require('debounce')
 var isomorphicFetch = require('isomorphic-fetch')
 var SparqlClient = require('sparql-http-client')
 var d3 = require('d3')
@@ -69049,11 +68918,35 @@ function Histogram (options) {
     .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
 }
 
+Histogram.prototype.init = function (app) {
+  var self = this
+
+  this.app = app
+  this.buildQuery = this.app.queryBuilder.createBuilder(this.app.getQuery(this.app.options.endpointUrl, 'histogram'))
+  this.renderHistogram = false
+
+  this.app.events.resultMetadata.on(function () {
+    self.renderHistogram = true
+  })
+
+  this.app.events.fetched.on(function () {
+    setTimeout(function () {
+      if (self.renderHistogram && !self.app.isFetching) {
+        self.render()
+      }
+    }, 1)
+  })
+
+  this.app.events.resize.on(debounce(this.render.bind(this), 500))
+}
+
 Histogram.prototype.clear = function () {
   this.histogram.selectAll('.bar').remove()
 }
 
-Histogram.prototype.render = function (searchString, start, end) {
+Histogram.prototype.render = function () {
+  var searchString = this.app.searchText
+
   var query = this.buildQuery()
     .replace(/\${searchString}/g, searchString)
     .replace(/\${width}/g, document.getElementById('timeline-container').width.baseVal.value - this.margin.left - this.margin.right)
@@ -69100,6 +68993,8 @@ Histogram.prototype.render = function (searchString, start, end) {
       // canceled fetch
     }
   })
+
+  this.renderHistogram = false
 }
 
 Histogram.prototype.tooltip = function (count, start, end) {
@@ -69109,7 +69004,7 @@ Histogram.prototype.tooltip = function (count, start, end) {
 
 module.exports = Histogram
 
-},{"cancelable-fetch":48,"d3":63,"isomorphic-fetch":107,"sparql-http-client":301}],332:[function(require,module,exports){
+},{"cancelable-fetch":48,"d3":63,"debounce":64,"isomorphic-fetch":107,"sparql-http-client":301}],330:[function(require,module,exports){
 var clone = require('lodash/clone')
 
 function QueryBuilder (filters, parts) {
@@ -69157,7 +69052,13 @@ QueryBuilder.prototype.buildFilters = function () {
     if (filter.operator === '=') {
       return ind + '?sub ' + propertyPathPrefix + '<' + filter.predicate + '>' + propertyPathPostfix + ' ' + filter.value + ' .'
     } else if (filter.operator === 'IN') {
-      var value = '(' + filter.value.join(', ') + ')'
+      var value = filter.value
+
+      if (Array.isArray(value)) {
+        value = value.join(', ')
+      }
+
+      value = '(' + value + ')'
 
       return ind + '?sub ' + propertyPathPrefix + '<' + filter.predicate + '>' + propertyPathPostfix + ' ?' + filter.variable + ' .\n' +
         ind + 'FILTER (?' + filter.variable + ' ' + filter.operator + ' ' + value + ')'
@@ -69167,7 +69068,8 @@ QueryBuilder.prototype.buildFilters = function () {
     }
   }).join('\n')
 
-  sparql = '\n    GRAPH ?g {\n' + sparql + '    \n    }'
+  //if no GRAPH is specified stardog takes all graphs into account
+//  sparql = '\n    GRAPH ?g {\n' + sparql + '    \n    }'
 
   return sparql
 }
@@ -69181,8 +69083,8 @@ QueryBuilder.compactFilters = function (filters) {
   // merge = filters with the same predicate to IN filter
   filters = filters.reduce(function (filters, filter) {
     var existing = filters.filter(function (existing) {
-      return filter.operator === '=' &&
-        (existing.operator === '=' || existing.operator === 'IN') &&
+      return filter.operator === 'IN' &&
+        existing.operator === 'IN' &&
         existing.predicate === filter.predicate
     }).shift()
 
@@ -69210,7 +69112,7 @@ QueryBuilder.compactFilters = function (filters) {
 
 module.exports = QueryBuilder
 
-},{"lodash/clone":207}],333:[function(require,module,exports){
+},{"lodash/clone":207}],331:[function(require,module,exports){
 var colorHash = new (require('color-hash'))
 
 var renderer = {}
@@ -69238,7 +69140,7 @@ renderer.renderResult = function (page, subject) {
       ' data-label="' + levelShort + ': ' + title.object.toString() + '"' +
       ' data-value="' + subject + '" ' +
       ' data-named-node' +
-      ' onclick="app.addFilter(this)" style="background-color: ' + levelColor + '">' + levelShort + '</div></div>'
+      ' onclick="app.search.addFilter(this)" style="background-color: ' + levelColor + '">' + levelShort + '</div></div>'
 
   var titleString = '<a href="' + subject.toString() + '">' + title.object.toString() + '</a>'
 
@@ -69258,7 +69160,7 @@ renderer.renderResult = function (page, subject) {
     maintenanceAgency = '<div data-filterable="="' +
       ' data-predicate="' + maintenanceAgencyCode.predicate.toString() + '" ' +
       ' data-value="' + maintenanceAgencyCode.object.toString() + '" ' +
-      ' class="filterable" onclick="app.addFilter(this)">' + maintenanceAgencyCode.object.toString() + '</div>'
+      ' class="filterable" onclick="app.search.addFilter(this)">' + maintenanceAgencyCode.object.toString() + '</div>'
   }
 
   var conceptTags = page.match(subject, 'http://data.alod.ch/alod/conceptTag').toArray()
@@ -69268,7 +69170,7 @@ renderer.renderResult = function (page, subject) {
           conceptTagDivs = conceptTagDivs + '<div data-filterable="="' +
         ' data-predicate="' + tag.predicate.toString() + '" ' +
         ' data-value="' + tag.object.toString() + '" ' +
-        ' class="filterable" onclick="app.addFilter(this)">' + tag.object.toString() + '</div>'
+        ' class="filterable" onclick="app.search.addFilter(this)">' + tag.object.toString() + '</div>'
       })
   }
 
@@ -69324,7 +69226,180 @@ renderer.postRender = function () {
 
 module.exports = renderer
 
-},{"color-hash":53}],334:[function(require,module,exports){
+},{"color-hash":53}],332:[function(require,module,exports){
+var renderer = require('./renderer')
+var Event = require('crab-event').Event
+var SparqlSearchResultList = require('sparql-search-result-list')
+
+function ResultList (options) {
+  this.options = options
+  this.isFetching = 0
+}
+
+ResultList.prototype.name = 'ResultList'
+
+ResultList.prototype.init = function (app) {
+  var self = this
+
+  this.app = app
+
+  this.app.events.resultMetadata = new Event()
+
+  this.resultList = new SparqlSearchResultList({
+    endpointUrl: this.app.options.endpointUrl,
+    pageSize: this.app.options.resultList.pageSize,
+    preload: this.app.options.resultList.preload,
+    resultType: this.app.options.resultTypes.slice().shift(),
+    scrollArea: 'scrollArea',
+    contentArea: 'contentArea',
+    dummyResult: '<div class="zack-result"></div>',
+    renderResult: renderer.renderResult,
+    onResultRendered: renderer.postRender,
+    onFetched: this.app.events.fetched.trigger,
+    onFetching: this.app.events.fetching.trigger,
+    onResultMetadata: this.app.events.resultMetadata.trigger
+  })
+
+  // replace default filter query builder methods
+  this.resultList.buildMetadataFilterQuery = this.app.queryBuilder.createBuilder(this.app.getQuery(this.app.options.endpointUrl, 'count'))
+  this.resultList.buildResultFilterQuery = this.app.queryBuilder.createBuilder(this.app.getQuery(this.app.options.endpointUrl, 'search'))
+
+  // connect events
+  this.app.events.search.on(function () {
+    self.resultList.search(app.searchText)
+  })
+
+  this.app.events.fetched.on(function () {
+    self.isFetching--
+  })
+
+  this.app.events.fetching.on(function () {
+    self.isFetching++
+  })
+
+  this.app.events.resultMetadata.on(function (metadata) {
+    document.getElementById('count').innerHTML = metadata.length
+    document.getElementById('scrollArea').scrollTop = 0
+
+    renderer.init(metadata)
+  })
+}
+
+module.exports = ResultList
+
+},{"./renderer":331,"crab-event":56,"sparql-search-result-list":302}],333:[function(require,module,exports){
+var debounce = require('debounce')
+var filter = require('./filter')
+var Event = require('crab-event').Event
+
+function Search () {
+  this.filters = []
+  this.staticFilters = []
+}
+
+Search.prototype.init = function (app) {
+  var self = this
+
+  this.app = app
+  this.app.search = this
+
+  this.app.events.filterChange = new Event()
+  this.app.events.filterDuplicate = new Event()
+  this.app.events.search = new Event()
+
+  this.app.events.filterChange.on(function () {
+    self.app.queryBuilder.setFilters(self.filters)
+    self.app.events.search.trigger()
+  })
+
+  this.app.events.search.on(this.prepareSearch.bind(this))
+
+  document.getElementById('query').onkeyup = debounce(function () {
+    self.app.events.search.trigger()
+  }, 250)
+
+  if (this.app.options.resultTypes) {
+    this.app.options.resultTypes.forEach(function (resultType) {
+      self.staticFilters.push({
+        operator: '=',
+        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+        termType: 'NamedNode',
+        variable: 'resultType',
+        value: '<' + resultType + '>'
+      })
+    })
+  }
+
+  return this.updateFilters().then(function () {
+    return self.app.events.search.trigger()
+  })
+}
+
+Search.prototype.prepareSearch = function () {
+  var query = document.getElementById('query').value
+
+  if (query.trim() !== '') {
+    query = query.replace('"', '').trim()
+  } else {
+    query = null
+  }
+
+  // only use the textmatch SPARQL part if query is not empty
+  this.app.queryBuilder.setParts({
+    'textmatch': query ? this.app.getQuery(this.app.options.endpointUrl, 'textmatch') : ''
+  })
+
+  this.app.searchText = query
+}
+
+Search.prototype.updateFilters = function () {
+  var htmlFilters = filter.fromElements(document.querySelectorAll('[data-filter]'), this.app.events.filterChange.trigger)
+
+  // build filter list from HTML elements and static filters
+  this.filters = htmlFilters.concat(this.staticFilters)
+
+  return this.app.events.filterChange.trigger()
+}
+
+Search.prototype.removeFilter = function (element) {
+  element.parentNode.removeChild(element)
+
+  this.updateFilters()
+}
+
+Search.prototype.containsFilter = function (other) {
+  return this.filters.some(function (existing) {
+    return filter.compare(existing, other)
+  })
+}
+
+Search.prototype.addFilter = function (label, operator, predicate, value, options) {
+  var instance
+
+  if (arguments.length === 1) {
+    var element = label
+
+    label = element.getAttribute('data-label') || element.textContent
+    instance = filter.fromElement(element)
+  } else {
+    instance = filter(operator, predicate, value, options)
+  }
+
+  if (this.containsFilter(instance)) {
+    return this.app.events.filterDuplicate.trigger({
+      label: label,
+      filter: instance
+    })
+  }
+
+  document.getElementById(this.app.options.filterContainer).appendChild(filter.toElement(label, instance, this))
+
+  return this.updateFilters()
+}
+
+module.exports = Search
+
+},{"./filter":328,"crab-event":56,"debounce":64}],334:[function(require,module,exports){
 /* global Event */
 var d3 = require('d3')
 
@@ -69421,7 +69496,25 @@ function Timeline (options) {
       .attr('id', 'timeline-axis')
 }
 
-Timeline.prototype.render = function (start, end) {
+Timeline.prototype.init = function (app) {
+  this.app = app
+
+  this.app.events.resize.on(this.render.bind(this))
+  this.app.events.resultMetadata.on(this.render.bind(this))
+}
+
+Timeline.prototype.render = function () {
+  var start = new Date()
+  var end = new Date()
+
+  var resultList = this.app.findPlugin('ResultList')
+  var histogram = this.app.findPlugin('Histogram')
+
+  if (resultList) {
+    start = resultList.resultList.start
+    end = resultList.resultList.end
+  }
+
   // update in case resize occured
   this.width = document.getElementById('zack-timeline').offsetWidth
   this.innerWidth = this.width - this.margin.left - this.margin.right
@@ -69461,9 +69554,14 @@ Timeline.prototype.render = function (start, end) {
   this.toHandle
     .attr('visibility', 'visible')
     .attr('x', this.width - this.margin.left - this.margin.right - this.handleWidth)
+
+  if (histogram) {
+    histogram.clear()
+  }
 }
 
 module.exports = Timeline
 
-},{"d3":63}]},{},[328])
+},{"d3":63}]},{},[327])(327)
+});
 //# sourceMappingURL=zack.js.map
