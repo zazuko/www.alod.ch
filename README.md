@@ -1,6 +1,6 @@
 # aLOD Swiss Archival Institutions [alod.ch]
 
-This provides an [aLOD](http://github.com/zazuko/alod) instance for [data.alod.ch](http://data.alod.ch). 
+This is the Zazuko [Travertin](https://github.com/zazuko/travertin) instance for the [aLOD](http://data.alod.ch) project. 
 
 ## Requirements
 
