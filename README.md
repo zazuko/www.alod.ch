@@ -12,5 +12,5 @@ You need to have [docker](https://docker.com/) installed.
     
 ## Running
 
-    docker run --rm -p 80:80 alod
+    docker run --rm -p 80:8080 alod
     
