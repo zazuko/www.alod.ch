@@ -1,15 +1,6 @@
 {
   "baseConfig": "trifid:config-sparql.json",
-  "sparqlEndpointUrl": "http://data.zazuko.com/annex/alod/sparql/query",
-  "sparqlProxy": {
-    "options": {
-      "queryOperation": "postQueryUrlencoded",
-      "authentication": {
-        "user": "admin",
-        "password": "aePh5pho0ood"
-      }
-    }
-  },
+  "sparqlEndpointUrl": "http://data.admin.ch:3030/alod/sparql",
   "staticFiles": {
     "rendererFiles": {
       "path": "/",
@@ -18,6 +9,10 @@
     "alodFiles": {
       "path": "/",
       "folder": "cwd:public"
+    },
+    "zackFiles": {
+      "path": "/search/",
+      "folder":  "cwd:node_modules/zack-search/dist"
     }
   },
   "handler": {

@@ -6,12 +6,11 @@
   "dependencies": {
     "trifid": "^1.0.1",
     "trifid-renderer-simple": "0.0.9",
-    "zack-search": "git://github.com/zazuko/zack-search.git#stardog"
+    "zack-search": "git://github.com/zazuko/zack-search.git#dev"
   },
   "devDependencies": {},
   "license": "UNLICENSED",
   "scripts": {
-    "build": "mkdir -p public/search && cp -r node_modules/zack-search/dist/* public/search",
     "install": "npm run build",
     "start": "trifid --config config.alod.json",
     "start-local": "trifid --config config.alod.dev.bs.json"
