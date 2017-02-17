@@ -11,7 +11,6 @@
   "devDependencies": {},
   "license": "UNLICENSED",
   "scripts": {
-    "install": "npm run build",
     "start": "trifid --config config.alod.json",
     "start-local": "trifid --config config.alod.dev.bs.json"
   }
