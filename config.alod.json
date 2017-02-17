@@ -9,6 +9,10 @@
     "alodFiles": {
       "path": "/",
       "folder": "cwd:public"
+    },
+    "zackFiles": {
+      "path": "/search/",
+      "folder":  "cwd:node_modules/zack-search/dist"
     }
   },
   "handler": {
