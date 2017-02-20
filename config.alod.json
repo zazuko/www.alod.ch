@@ -1,6 +1,15 @@
 {
   "baseConfig": "trifid:config-sparql.json",
-  "sparqlEndpointUrl": "http://data.admin.ch:3030/alod/sparql",
+  "sparqlEndpointUrl": "http://data.zazuko.com/annex/alod/sparql/query",
+  "sparqlProxy": {
+    "options": {
+      "queryOperation": "postQueryUrlencoded",
+      "authentication": {
+        "user": "admin",
+        "password": "aePh5pho0ood"
+      }
+    }
+  },
   "staticFiles": {
     "rendererFiles": {
       "path": "/",
