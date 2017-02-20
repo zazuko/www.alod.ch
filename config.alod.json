@@ -26,6 +26,10 @@
   },
   "handler": {
     "options": {
+      "authentication": {
+        "user": "admin",
+        "password": "aePh5pho0ood"
+      },
       "resourceExistsQuery": "ASK { GRAPH ?g { <${iri}> ?p ?o }}"
     }
   },
