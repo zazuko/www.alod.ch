@@ -1,0 +1,5 @@
+{
+  "baseConfig": "cwd:config.alod.json",
+  "datasetBaseUrl": "http://data.ge.alod.ch/",
+  "sparqlEndpointUrl": "http://localhost:3030/alod/sparql"
+}

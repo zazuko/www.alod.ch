@@ -12,6 +12,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "trifid --config config.alod.json",
-    "start-local": "trifid --config config.alod.dev.bs.json"
+    "start-local": "trifid --config config.alod.dev.bs.json",
+    "start-local-sparql": "trifid --config config.alod.dev-local.gs.json"
   }
 }
