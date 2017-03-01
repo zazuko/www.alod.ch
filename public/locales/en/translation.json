@@ -2,11 +2,9 @@
   "headline": "ALOD",
   "subheading": "Archival Linked Open Data",
   "search": {
-    "link": "Here",
-    "text": " you can search the archive."
+    "link": "Search the Archives",
   },
   "sparql": {
-    "link": "SPARQL",
-    "text": " queries can be executed with the browser interface."
+    "link": "SPARQL Endpoint",
   }
 }
