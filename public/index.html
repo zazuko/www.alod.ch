@@ -1,34 +1,49 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" integrity="sha384-awusxf8AUojygHf2+joICySzB780jVvQaVCAt1clU3QsyAitLGul28Qxb2r1e5g+" crossorigin="anonymous">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+
+  <link href="zack.css" rel="stylesheet">
 </head>
 <body>
- <nav class="navbar navbar-default">
-	 <div class="container-fluid">
-		 <div class="collapse navbar-collapse">
-			 <div class="navbar-form navbar-right">
-				 <a href="?setLng=de">de</a>
-				 <a href="?setLng=fr">fr</a>
-				 <a href="?setLng=it">it</a>
-				 <a href="?setLng=en">en</a>
-			 </div>
-		 </div>
-	 </div>
- </nav>
-
-	<div class="container">
-		<div class="row">
-			<div class="col-md-1">
-			</div>
-			<div class="col-md-5">
-				<h2 data-i18n="headline">aLOD</h2>
-				<h3 data-i18n="subheading">Archival Linked Open Data</h3>
+<div class="container">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">aLOD.ch - Archival Linked Open Data</a>
       </div>
-     </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/search">Search</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Participating Archives <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a target="_blank" href="http://www.bar.admin.ch/">Archives fédérales suisses</a></li>
+              <li><a target="_blank" href="http://www.ne.ch/archives">Archives de l’Etat de Neuchâtel</a></li>
+              <li><a target="_blank" href="http://www.vs.ch/Navig/navig.asp?MenuID=20179">Archives de l’Etat du Valais</a></li>
+              <li><a target="_blank" href="http://etat.geneve.ch/dt/archives/">Archives d’Etat de Genève</a></li>
+              <li><a target="_blank" href="http://www.staatsarchiv.bs.ch/">Archives cantonales de Bâle-Ville</a></li>
+              <li><a target="_blank" href="#">Archives de la Ville de Baden</a></li>
+            </ul>
+          </li>
+          <li class="active"><a href="/">About</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+  </nav>
 		<div class="row">
-			<div class="col-md-offset-1 col-md-7">
+			<div class="col-md-8">
                 Le domaine <a href="http://data.alod.ch">data.alod.ch</a> constitue le point d'entrée de la description du projet. Il s'agit d'un prototype dont l'objectif est de servir de banc de test pour l'évaluation du potentiel de la technologie Linked Data (LD) dans le domaine des archives.<br>
                 <br>
                 Les jeux de données sont limités à deux thématiques spécifiques: la <a href="http://www.hls-dhs-dss.ch/textes/f/F9797.php">République helvétique</a> et la <a href="http://www.hls-dhs-dss.ch/textes/f/F9798.php">Médiation</a>.<br>
@@ -67,9 +82,6 @@ Stadtarchiv Baden
 
 			</div>
 			<div class="col-md-3">
-				<p>
-					<a data-i18n="search.link" href="/search/">Search the Archives</a>
-				</p>
 				<p>
 					<a data-i18n="sparql.link" href="/sparql/">SPARQL Endpoint</a>
 				</p>
