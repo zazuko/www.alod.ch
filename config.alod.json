@@ -31,7 +31,7 @@
         "password": "aePh5pho0ood"
       },
       "resourceExistsQuery": "ASK { GRAPH ?g { <${iri}> ?p ?o }}",
-      "resourceGraphQuery": "DESCRIBE <${iri}> FROM <http://data.alod.ch/graph/bs> FROM <http://data.alod.ch/graph/bar> FROM <http://data.alod.ch/graph/ne> FROM <http://data.alod.ch/graph/ge> FROM <http://data.alod.ch/graph/vs>"
+      "resourceGraphQuery": "DESCRIBE <${iri}> FROM <http://data.alod.ch/graph/bs> FROM <http://data.alod.ch/graph/bar> FROM <http://data.alod.ch/graph/ne> FROM <http://data.alod.ch/graph/ge> FROM <http://data.alod.ch/graph/vs> FROM <http://data.alod.ch/graph/isil> FROM <http://data.alod.ch/graph/meta>"
     }
   },
   "renderer": {
