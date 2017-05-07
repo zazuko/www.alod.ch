@@ -46,54 +46,51 @@
   </nav>
 
   <div class="bs-docs-section">
-     <div class="container">
-
        <div class="row">
-         <div class="page-header"></div>
-       </div>
-
-       <div class="row">
-         <div class="col-md-1">
+         <div class="col-xs-2 col-md-1">
            <img id="logo" class="img-responsive" src="" />
          </div>
-         <div class="col-md-11">
+         <div class="col-xs-10 col-md-11">
            <div id="title"></div>
            <div id="sticky"></div>
-           <div class="" id="graph"></div>
          </div>
        </div>
 
-     </div>
+       <div class="row">
+         <div class="col-xs-12">
+           <div id="graph"></div>
+         </div>
+       </div>
   </div>
+</div>
+<script src="https://cdn.jsdelivr.net/g/es6-promise@1.0.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/0.4.11/jsonld.js"></script>
+<script src="https://unpkg.com/react@0.12/dist/react.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/g/es6-promise@1.0.0"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/0.4.11/jsonld.js"></script>
-  <script src="https://unpkg.com/react@0.12/dist/react.min.js"></script>
+<script src="/js/render-ld.js"></script>
 
-  <script src="/js/render-ld.js"></script>
+<script>
 
-  <script>
+ var logos = {
+   'localhost': '/images/Coat_of_arms_of_Switzerland.svg',
+   'data.alod.ch': '/images/Coat_of_arms_of_Switzerland.svg',
+   'data.staatsarchiv-bs.ch': '/images/Wappen_Basel-Stadt_matt.svg',
+   'data.ge.alod.ch': '/images/Wappen_Genf_matt.svg',
+   'data.ne.alod.ch': '/images/Wappen_Neuenburg_matt.svg',
+   'data.vs.alod.ch': '/images/Wappen_Wallis_matt.svg'
+ }
 
-   var logos = {
-     'localhost': '/images/Coat_of_arms_of_Switzerland.svg',
-     'data.alod.ch': '/images/Coat_of_arms_of_Switzerland.svg',
-     'data.staatsarchiv-bs.ch': '/images/Wappen_Basel-Stadt_matt.svg',
-     'data.ge.alod.ch': '/images/Wappen_Genf_matt.svg',
-     'data.ne.alod.ch': '/images/Wappen_Neuenburg_matt.svg',
-     'data.vs.alod.ch': '/images/Wappen_Wallis_matt.svg'
-   }
+ var img = document.getElementById('logo')
+ var logo
 
-   var img = document.getElementById('logo')
-   var logo
+ if (window.location.hostname in logos) {
+   logo = logos[window.location.hostname]
+ }
 
-   if (window.location.hostname in logos) {
-     logo = logos[window.location.hostname]
-   }
+ if (img && logo) {
+   img.setAttribute('src', logo)
+ }
 
-   if (img && logo) {
-     img.setAttribute('src', logo)
-   }
-
-  </script>
+</script>
 </body>
 </html>
