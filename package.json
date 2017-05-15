@@ -5,7 +5,6 @@
   "main": "index.js",
   "dependencies": {
     "trifid": "^1.0.1",
-    "trifid-renderer-simple": "1.0.0",
     "zack-search": "git://github.com/zazuko/zack-search.git#develop"
   },
   "devDependencies": {},
