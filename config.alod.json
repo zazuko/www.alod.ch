@@ -15,15 +15,14 @@
       "path": "/",
       "folder": "renderer:public"
     },
+    "wwwAlodFiles": {
+      "path": "/",
+      "folder": "cwd:public/www"
+    },
     "dataAlodFiles": {
       "hostname": "data.alod.ch",
       "path": "/",
       "folder": "cwd:public/data"
-    },
-    "wwwAlodFiles": {
-      "hostname": "www.alod.ch",
-      "path": "/",
-      "folder": "cwd:public/www"
     },
     "zackFiles": {
       "path": "/search/",
