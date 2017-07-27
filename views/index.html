@@ -1,0 +1,62 @@
+${set('moduleFoot','<li><a href="?format=jsonld">json-ld</a> | <a href="?format=ttl">turtle</a> | <a href="?format=nt">n3</a></li>')}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+${include('cwd:views/header.html')}
+
+</head>
+<body>
+
+
+${include('cwd:views/navigation.html')}
+
+<div class="container">
+  <div class="bs-docs-section">
+       <div class="row">
+         <div class="col-xs-2 col-md-1">
+           <img id="logo" class="img-responsive" src="" />
+         </div>
+         <div class="col-xs-10 col-md-11">
+           <div id="title"></div>
+           <div id="subtitle"></div>
+         </div>
+       </div>
+       <div class="row">
+         <div class="col-xs-12">
+           <div id="graph"></div>
+         </div>
+       </div>
+  </div>
+
+${include('cwd:views/footer.html')}
+
+</div>
+
+<script src="/js/render-ld.js"></script>
+
+<script>
+
+ var logos = {
+   'localhost': '/images/Coat_of_arms_of_Switzerland.svg',
+   'data.alod.ch': '/images/Coat_of_arms_of_Switzerland.svg',
+   'data.staatsarchiv-bs.ch': '/images/Wappen_Basel-Stadt_matt.svg',
+   'data.ge.alod.ch': '/images/Wappen_Genf_matt.svg',
+   'data.ne.alod.ch': '/images/Wappen_Neuenburg_matt.svg',
+   'data.vs.alod.ch': '/images/Wappen_Wallis_matt.svg'
+ }
+
+ var img = document.getElementById('logo')
+ var logo
+
+ if (window.location.hostname in logos) {
+   logo = logos[window.location.hostname]
+ }
+
+ if (img && logo) {
+   img.setAttribute('src', logo)
+ }
+
+</script>
+</body>
+</html>

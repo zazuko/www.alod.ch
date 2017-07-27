@@ -1,4 +1,4 @@
 {
-  "baseConfig": "cwd:config.alod.json",
+  "baseConfig": "cwd:config.json",
   "datasetBaseUrl": "http://data.staatsarchiv-bs.ch/"
 }
