@@ -5,6 +5,7 @@ ${set('moduleFoot','<li><a href="?format=jsonld">json-ld</a> | <a href="?format=
 
 ${include('cwd:views/header.html')}
 
+
 </head>
 <body>
 
@@ -32,8 +33,10 @@ ${include('cwd:views/navigation.html')}
 ${include('cwd:views/footer.html')}
 
 </div>
-
-<script src="/js/render-ld.js"></script>
+  <script src="https://cdn.jsdelivr.net/g/es6-promise@1.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/0.4.12/jsonld.js"></script>
+  <script src="/js/render-ld.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.10/bootstrap-native.min.js"></script>
 
 <script>
 
@@ -56,7 +59,7 @@ ${include('cwd:views/footer.html')}
  if (img && logo) {
    img.setAttribute('src', logo)
  }
-
 </script>
+
 </body>
 </html>
