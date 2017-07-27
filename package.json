@@ -4,7 +4,7 @@
   "description": "Zazuko aLOD is a software to manage archival finding aids using Linked Data",
   "main": "index.js",
   "dependencies": {
-    "trifid": "^1.6.0",
+    "trifid": "^1.7.2",
     "zack-search": "git://github.com/zazuko/zack-search.git#develop"
   },
   "devDependencies": {},
