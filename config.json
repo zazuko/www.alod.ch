@@ -1,12 +1,12 @@
 {
   "baseConfig": "trifid:config-sparql.json",
-  "sparqlEndpointUrl": "http://data.zazuko.com/annex/alod/sparql/query",
+  "sparqlEndpointUrl": "https://test.lindas-data.ch:8443/alod/query",
   "sparqlProxy": {
     "options": {
       "queryOperation": "postQueryUrlencoded",
       "authentication": {
-        "user": "admin",
-        "password": "aePh5pho0ood"
+        "user": "public",
+        "password": "public"
       }
     }
   },
@@ -32,10 +32,10 @@
   "handler": {
     "options": {
       "authentication": {
-        "user": "admin",
-        "password": "aePh5pho0ood"
+        "user": "public",
+        "password": "public"
       },
-      "resourceExistsQuery": "ASK { GRAPH ?g { <${iri}> ?p ?o }}",
+      "resourceExistsQuery": "ASK { <${iri}> ?p ?o }",
      // "resourceGraphQuery": "DESCRIBE <${iri}> FROM <http://data.alod.ch/graph/bs> FROM <http://data.alod.ch/graph/bar> FROM <http://data.alod.ch/graph/ne> FROM <http://data.alod.ch/graph/ge> FROM <http://data.alod.ch/graph/vs> FROM <http://data.alod.ch/graph/isil> FROM <http://data.alod.ch/graph/meta>"
       "resourceGraphQuery": "DESCRIBE <${iri}>"
 
