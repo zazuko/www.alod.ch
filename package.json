@@ -1,6 +1,6 @@
 {
   "name": "alod",
-  "version": "1.4.4",
+  "version": "1.5.0",
   "description": "Zazuko aLOD is a software to manage archival finding aids using Linked Data",
   "dependencies": {
     "trifid": "1.7.9",
