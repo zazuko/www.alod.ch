@@ -1,6 +1,6 @@
 {
   "baseConfig": "trifid:config-sparql.json",
-  "sparqlEndpointUrl": "https://test.lindas-data.ch:8443/alod/query",
+  "sparqlEndpointUrl": "https://lindas-data.ch:8443/alod/query",
   "sparqlProxy": {
     "options": {
       "queryOperation": "postQueryUrlencoded",
@@ -36,7 +36,6 @@
         "password": "public"
       },
       "resourceExistsQuery": "ASK { <${iri}> ?p ?o }",
-     // "resourceGraphQuery": "DESCRIBE <${iri}> FROM <http://data.alod.ch/graph/bs> FROM <http://data.alod.ch/graph/bar> FROM <http://data.alod.ch/graph/ne> FROM <http://data.alod.ch/graph/ge> FROM <http://data.alod.ch/graph/vs> FROM <http://data.alod.ch/graph/isil> FROM <http://data.alod.ch/graph/meta>"
       "resourceGraphQuery": "DESCRIBE <${iri}>"
 
     }
