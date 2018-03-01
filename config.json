@@ -26,5 +26,20 @@
       "path": "/search/",
       "folder":  "cwd:node_modules/zack-search/dist"
     }
+  },
+  "hydraBox": {
+    "api": {
+      "documentationUrl": "/api",
+      "documentation": "cwd:api/api.jsonld",
+      "options": {
+        "sparqlEndpointUrl": "http://data.zazuko.com/alod-crowd/update",
+        "authentication": {
+          "user": "alod-write",
+          "password": "IG4Ve0Uu"
+        },
+        "debug": true,
+        "contextHeader": "/context/"
+      }
+    }
   }
 }
