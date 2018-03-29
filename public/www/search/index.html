@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" integrity="sha256-LxKiHTQko0DUCUSgrIK23SYMymvfuj8uxXmblBvVWm0=" crossorigin="anonymous">
-  <!--<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.11.0/css/bootstrap-tour.min.css" rel="stylesheet" integrity="sha256-r7R5NjcsiLK3ubv/Ee7yBl5n9zV+xoj1K6kzJ4E9jBU=" crossorigin="anonymous">-->
   <link href="//cdn.jsdelivr.net/npm/bootstrap-tour@0.12.0/build/css/bootstrap-tour.min.css" rel="stylesheet" crossorigin="anonymous">
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 
@@ -94,80 +93,135 @@
 </div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-<!--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js" integrity="sha256-AFoIN2Z5u5QDw8n9X0FoP/p1ZhE1xDnsgHlCMWE0yYQ=" crossorigin="anonymous"></script>-->
 <script src="//cdn.jsdelivr.net/npm/bootstrap-tour@0.12.0/build/js/bootstrap-tour.min.js" crossorigin="anonymous"></script>
-<script src="zack.min.js"></script>
-<script>
-  var options = {
-    endpointUrl: '/query',
-    filterContainer: 'filter-container',
-    resultTypes: ['http://data.archiveshub.ac.uk/def/ArchivalResource'],
-    resultList: {
-      pageSize: 20,
-      preload: 80
-    },
-    endpoints: {
-      '/query': {
-        queries: {
-          search: 'stardogResultset',
-          count: 'stardogMeta',
-          histogram: 'stardogHistogram',
-          textmatch: 'stardogFulltextPart'
+<script src="//cdn.jsdelivr.net/npm/color-hash@1.0.3/dist/color-hash.js" crossorigin="anonymous"></script><!-- required by renderer -->
 
-        }
-      },
-      'https://query.wikidata.org/sparql': {
-        queries: {
-          tagSearch: 'wikidataHlsTagSearch'
-        }
+<script id="custom-stardog-resultset.sparql" type="application/sparql-query">
+PREFIX : <http://voc.zazuko.com/zack#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  text: <http://jena.apache.org/text#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  :query :result ?sub .
+  ?sub a :resultItem .
+  ?sub ?pred ?obj .
+  ?sub1 <http://data.archiveshub.ac.uk/def/level> ?level1 .
+  ?sub1 <http://purl.org/dc/terms/title> ?title1 .
+  ?sub1 <http://purl.org/dc/terms/relation> ?sub2 .
+
+  ?sub2 <http://data.archiveshub.ac.uk/def/level> ?level2 .
+  ?sub2 <http://purl.org/dc/terms/title> ?title2 .
+  ?sub2 <http://purl.org/dc/terms/relation> ?sub3 .
+
+  ?sub3 <http://data.archiveshub.ac.uk/def/level> ?level3 .
+  ?sub3 <http://purl.org/dc/terms/title> ?title3 .
+  ?sub3 <http://purl.org/dc/terms/relation> ?sub4 .
+
+  ?sub4 <http://data.archiveshub.ac.uk/def/level> ?level4 .
+  ?sub4 <http://purl.org/dc/terms/title> ?title4 .
+  ?sub4 <http://purl.org/dc/terms/relation> ?sub5 .
+
+  ?sub5 <http://data.archiveshub.ac.uk/def/level> ?level5 .
+  ?sub5 <http://purl.org/dc/terms/title> ?title5 .
+  ?sub5 <http://purl.org/dc/terms/relation> ?sub6 .
+
+  ?sub6 <http://data.archiveshub.ac.uk/def/level> ?level6 .
+  ?sub6 <http://purl.org/dc/terms/title> ?title6 .
+  ?sub6 <http://purl.org/dc/terms/relation> ?sub7 .
+
+  ?sub7 <http://data.archiveshub.ac.uk/def/level> ?level7 .
+  ?sub7 <http://purl.org/dc/terms/title> ?title7 .
+  ?sub7 <http://purl.org/dc/terms/relation> ?sub8 .
+
+  ?sub8 <http://data.archiveshub.ac.uk/def/level> ?level8 .
+  ?sub8 <http://purl.org/dc/terms/title> ?title8 .
+  ?sub8 <http://purl.org/dc/terms/relation> ?sub9 .
+
+  ?sub9 <http://data.archiveshub.ac.uk/def/level> ?level9 .
+  ?sub9 <http://purl.org/dc/terms/title> ?title9 .
+
+  ?obj <http://schema.org/name> ?name .
+  ?sub :score ?totalScore .
+} WHERE {
+  {
+    SELECT ?sub ?totalScore WHERE {
+      ${textmatch}
+      ${filters}
+
+      OPTIONAL {
+        ?sub <http://www.w3.org/2006/time#intervalStarts> ?startOptional .
       }
-    },
-    plugins: [
-      new Zack.Histogram({
-        margin: {top: 0, right: 35, bottom: 40, left: 35},
-        height: 120
-      }),
-      new Zack.TypeFilter({
-        predicate: 'http://data.archiveshub.ac.uk/def/level',
-        values: {
-         'http://data.alod.ch/alod/level/archive': {icon: 'fa-university', title: 'Archives'},
-         'http://data.alod.ch/alod/level/fond': {icon: 'fa-archive', title: 'Fonds'},
-         'http://data.alod.ch/alod/level/subfond': {icon: 'fa-archive', title: 'Sub-Fonds'},
-         'http://data.alod.ch/alod/level/series': {icon: 'fa-sitemap', title: 'Series'},
-         'http://data.alod.ch/alod/level/file': {icon: 'fa-folder-open', title: 'Files'},
-         'http://data.alod.ch/alod/level/item': {icon: 'fa-file', title: 'Items'}
-        }
-      }),
-      new Zack.Tagger({
-        endpointUrl: 'https://query.wikidata.org/sparql'
-      }),
-      new Zack.Intro({
-        backdrop: true,
-        orphan: true,
-        steps: [
-          { title: 'Welcome to aLOD Search', content: 'We invite you to discover aLOD Search with this interactive tour. You can always restart the tour with the <i class="fa fa-question"></i> in the top corner.'},
-          { element: '.zack-content', placement: 'top', title: 'Archival Resources', content: 'All available Archival Resources are shown at once. Just scroll to discover the multititude of different documents.'},
-          { element: '.zack-result:first', title: 'Result', content: 'On the left you see which kind of Archival Result the result represents. Further you get the title and diffrent information on the aArchival Resource dependign of the Archive.' },
-          { element: '#query', title: 'Filter by Query', content: 'If you look for something specific you can enter keywords to filter the results.' },
-          { element: '#type-filters', placement: 'bottom', title: 'Filter by Hierarchy Level', content: 'Filter the results to a specific hierarchy level.<dl>'
-            +'<dt>Archives</dt><dd>an independent institution</dd>'
-            +'<dt>Fonds</dt><dd>a logical organisation of documents</dd>'
-            +'<dt>Sub-Fonds</dt><dd>a logical organisation organisation of documents<dd>'
-            +'<dt>Series</dt><dd>a series of related collections or documents</dd>'
-            +'<dt>Files</dt><dd>a collection of documents</dd>'
-            +'<dt>Items</dt><dd>an individual document</dd></dl>' },
-          { element: '.result-tags .actionable:first', title: 'Contribute Tags', content: 'You can contribute to the project by adding your own tags.' }
-        ]
-      })
-    ]
+      BIND ( COALESCE(STR(?startOptional), "0001-01-01") AS ?start )
+      BIND ( xsd:date(CONCAT(SUBSTR(?start, 0, 10), SUBSTR("0001-01-01", STRLEN(?start) + 1))) AS ?startDate )
+      BIND ( ?startDate - xsd:date(NOW()) AS ?startDelta )
+      BIND ( COALESCE(xsd:float(STRBEFORE(STRAFTER(STR(?startDelta),"P"), "D")), 0) AS ?startScore )
+      BIND ( COALESCE(?score, ?startScore) AS ?totalScore )
+    }
+    ORDER BY DESC(?totalScore)
+    OFFSET ${offset}
+    LIMIT ${limit}
   }
 
-  window.app = new Zack(options)
+  ?sub ?pred ?obj .
 
-  window.app.init().catch(function (err) {
-    console.error(err)
-  })
+  OPTIONAL {
+    ?obj <http://schema.org/name> ?name .
+  }
 
+  OPTIONAL {
+    ?sub <http://purl.org/dc/terms/relation> ?sub1 .
+    ?sub1 <http://data.archiveshub.ac.uk/def/level> ?level1 .
+    ?sub1 <http://purl.org/dc/terms/title> ?title1 .
+    OPTIONAL {
+      ?sub1 <http://purl.org/dc/terms/relation> ?sub2 .
+      ?sub2 <http://data.archiveshub.ac.uk/def/level> ?level2 .
+      ?sub2 <http://purl.org/dc/terms/title> ?title2 .
+      OPTIONAL {
+        ?sub2 <http://purl.org/dc/terms/relation> ?sub3 .
+        ?sub3 <http://data.archiveshub.ac.uk/def/level> ?level3 .
+        ?sub3 <http://purl.org/dc/terms/title> ?title3 .
+        OPTIONAL {
+          ?sub3 <http://purl.org/dc/terms/relation> ?sub4 .
+          ?sub4 <http://data.archiveshub.ac.uk/def/level> ?level4 .
+          ?sub4 <http://purl.org/dc/terms/title> ?title4 .
+          OPTIONAL {
+            ?sub4 <http://purl.org/dc/terms/relation> ?sub5 .
+            ?sub5 <http://data.archiveshub.ac.uk/def/level> ?level5 .
+            ?sub5 <http://purl.org/dc/terms/title> ?title5 .
+            OPTIONAL {
+              ?sub5 <http://purl.org/dc/terms/relation> ?sub6 .
+              ?sub6 <http://data.archiveshub.ac.uk/def/level> ?level6 .
+              ?sub6 <http://purl.org/dc/terms/title> ?title6 .
+              OPTIONAL {
+                ?sub6 <http://purl.org/dc/terms/relation> ?sub7 .
+                ?sub7 <http://data.archiveshub.ac.uk/def/level> ?level7 .
+                ?sub7 <http://purl.org/dc/terms/title> ?title7 .
+                OPTIONAL {
+                  ?sub7 <http://purl.org/dc/terms/relation> ?sub8 .
+                  ?sub8 <http://data.archiveshub.ac.uk/def/level> ?level8 .
+                  ?sub8 <http://purl.org/dc/terms/title> ?title8 .
+                  OPTIONAL {
+                    ?sub8 <http://purl.org/dc/terms/relation> ?sub9 .
+                    ?sub9 <http://data.archiveshub.ac.uk/def/level> ?level9 .
+                    ?sub9 <http://purl.org/dc/terms/title> ?title9 .
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </script>
+
+<script src="zack.min.js"></script>
+<script src="renderer.js"></script>
+<script src="intro.js"></script>
+<script src="search.js"></script>
 </body>
 </html>
