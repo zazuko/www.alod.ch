@@ -1,7 +1,7 @@
 var colorHash = new ColorHash()
 
 function getHierarchy (graph, subject) {
-  var title = graph.match(subject, 'http://purl.org/dc/terms/title').toArray().shift()
+  var title = graph.match(subject, 'http://www.ica.org/standards/RiC/ontology#title').toArray().shift()
   var level = graph.match(subject, 'http://data.archiveshub.ac.uk/def/level').toArray().shift()
 
   if (!level) {
@@ -62,7 +62,7 @@ renderer.renderResult = function (page, subject) {
       '</li>'
   }
 
-  var title = page.match(subject, 'http://purl.org/dc/terms/title').toArray().shift()
+  var title = page.match(subject, 'http://www.ica.org/standards/RiC/ontology#title').toArray().shift()
   var titleString = ''
   if (title) {
     titleString = title.object.toString()
@@ -103,7 +103,7 @@ renderer.renderResult = function (page, subject) {
   if (referenceCode) {
     referenceString = referenceCode.object.toString()
   } else {
-    var recordId = page.match(subject, 'http://data.alod.ch/alod/recordID').toArray().shift()
+    var recordId = page.match(subject, 'http://www.w3.org/2004/02/skos/core#notation').toArray().shift()
     if (recordId) {
       referenceString = recordId.object.toString()
     }
@@ -212,6 +212,7 @@ renderer.postRender = function () {
   var cursorPosition = function (e) {
     var timelineMargin = 40
     document.getElementById('timeCursor').style.left = (e.clientX - document.getElementById('zack-timeline').offsetLeft) - (timelineMargin / 2) + 'px'
+console.log("postrender")
   }
 
   Array.prototype.forEach.call(document.getElementsByClassName('result-time-tick-hover'), function (el) {

@@ -1,7 +1,7 @@
 var options = {
   endpointUrl: '/query',
   filterContainer: 'filter-container',
-  resultTypes: ['http://data.archiveshub.ac.uk/def/ArchivalResource'],
+  resultTypes: ['http://www.ica.org/standards/RiC/ontology#RecordSet'],
   resultList: {
     renderer: window.alod.renderer,
     pageSize: 20,
