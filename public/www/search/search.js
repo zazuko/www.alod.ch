@@ -54,12 +54,12 @@ var options = {
         { element: '.zack-result:first', title: 'Result', content: 'On the left you see which kind of Archival Result the result represents. Further you get the title and diffrent information on the aArchival Resource dependign of the Archive.' },
         { element: '#query', title: 'Filter by Query', content: 'If you look for something specific you can enter keywords to filter the results.' },
         { element: '#type-filters', placement: 'bottom', title: 'Filter by Hierarchy Level', content: 'Filter the results to a specific hierarchy level.<dl>'
-        +'<dt>Archives</dt><dd>an independent institution</dd>'
-        +'<dt>Fonds</dt><dd>a logical organisation of documents</dd>'
-        +'<dt>Sub-Fonds</dt><dd>a logical organisation organisation of documents<dd>'
-        +'<dt>Series</dt><dd>a series of related collections or documents</dd>'
-        +'<dt>Files</dt><dd>a collection of documents</dd>'
-        +'<dt>Items</dt><dd>an individual document</dd></dl>' },
+          +'<dt>Archives</dt><dd>an independent institution</dd>'
+          +'<dt>Fonds</dt><dd>a logical organisation of documents</dd>'
+          +'<dt>Sub-Fonds</dt><dd>a logical organisation organisation of documents<dd>'
+          +'<dt>Series</dt><dd>a series of related collections or documents</dd>'
+          +'<dt>Files</dt><dd>a collection of documents</dd>'
+          +'<dt>Items</dt><dd>an individual document</dd></dl>' },
         { element: '.result-tags .actionable:first', title: 'Contribute Tags', content: 'You can contribute to the project by adding your own tags.' }
       ]
     })
