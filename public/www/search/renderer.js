@@ -2,7 +2,7 @@ var colorHash = new ColorHash()
 
 function getHierarchy (graph, subject) {
   var title = graph.match(subject, 'http://www.ica.org/standards/RiC/ontology#title').toArray().shift()
-  var level = graph.match(subject, 'http://data.archiveshub.ac.uk/def/level').toArray().shift()
+  var level = graph.match(subject, 'http://www.ica.org/standards/RiC/ontology#recordSetType').toArray().shift()
 
   if (!level) {
     return []
@@ -78,7 +78,7 @@ renderer.renderResult = function (page, subject) {
   if (tf) {
     var faLevel = tf.options.values
 
-    var levelString = page.match(subject, 'http://data.archiveshub.ac.uk/def/level').toArray().shift().object.toString()
+    var levelString = page.match(subject, 'http://www.ica.org/standards/RiC/ontology#recordSetType').toArray().shift().object.toString()
     var levelShort = levelString.substring(levelString.lastIndexOf('/') + 1, levelString.length)
     var levelColor = colorHash.hex(levelShort)
 
