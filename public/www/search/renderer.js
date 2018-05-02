@@ -51,7 +51,7 @@ renderer.renderResult = function (page, subject) {
       '<li>' +
       '<a data-filterable="="' +
       ' data-toggle="tooltip" data-placement="bottom" title="Filter ' + nivShort + ': ' + hierarchy[niv].title + '"' +
-      ' data-predicate="http://purl.org/dc/terms/hasPart"' +
+      ' data-predicate="http://www.ica.org/standards/RiC/ontology#hasMember"' +
       ' data-property-path-prefix="^"' +
       ' data-property-path-postfix="+"' +
       ' data-label="' + nivShort + ': ' + hierarchy[niv].title + '"' +
@@ -89,7 +89,7 @@ renderer.renderResult = function (page, subject) {
 
     level = '<div class="result-level-wrap"><div class="vertical-text result-level" data-filterable="="' +
       ' data-toggle="tooltip" data-placement="right" title="Filter ' + levelShort + ': ' + titleString + '"' +
-      ' data-predicate="http://purl.org/dc/terms/hasPart"' +
+      ' data-predicate="http://www.ica.org/standards/RiC/ontology#hasMember"' +
       ' data-property-path-prefix="^"' +
       ' data-property-path-postfix="+"' +
       ' data-label="' + levelShort + ': ' + titleString + '"' +
