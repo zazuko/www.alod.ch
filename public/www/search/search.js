@@ -32,7 +32,7 @@ var options = {
       height: 120
     }),
     new Zack.TypeFilter({
-      predicate: 'http://data.archiveshub.ac.uk/def/level',
+      predicate: 'http://www.ica.org/standards/RiC/ontology#recordSetType',
       values: {
         'http://data.alod.ch/alod/level/archive': {icon: 'fa-university', title: 'Archives'},
         'http://data.alod.ch/alod/level/fond': {icon: 'fa-archive', title: 'Fonds'},

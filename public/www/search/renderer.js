@@ -99,7 +99,7 @@ renderer.renderResult = function (page, subject) {
   }
 
   var referenceString = ''
-  var referenceCode = page.match(subject, 'http://data.alod.ch/alod/referenceCode').toArray().shift()
+  var referenceCode = page.match(subject, 'http://data.alod.ch/alod/property/referenceCode').toArray().shift()
   if (referenceCode) {
     referenceString = referenceCode.object.toString()
   } else {
