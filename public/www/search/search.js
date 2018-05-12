@@ -10,10 +10,10 @@ var options = {
   endpoints: {
     '/query': {
       queries: {
-        search: 'customStardogResultset',
-        count: 'stardogMeta',
-        histogram: 'stardogHistogram',
-        textmatch: 'stardogFulltextPart'
+        search: 'ricoStardogResultset',
+        count: 'ricoStardogMeta',
+        histogram: 'ricoStardogHistogram',
+        textmatch: 'ricoStardogFulltextPart'
 
       }
     },
@@ -24,7 +24,10 @@ var options = {
     }
   },
   queries: {
-    customStardogResultset: document.getElementById('custom-stardog-resultset.sparql').innerHTML
+    ricoStardogMeta: document.getElementById('rico-stardog-meta.sparql').innerHTML,
+    ricoStardogFulltextPart: document.getElementById('rico-stardog-fulltext-part.sparql').innerHTML,
+    ricoStardogResultset: document.getElementById('rico-stardog-resultset.sparql').innerHTML,
+    ricoStardogHistogram: document.getElementById('rico-stardog-histogram.sparql').innerHTML
   },
   plugins: [
     new Zack.Histogram({
