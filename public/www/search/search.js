@@ -13,8 +13,7 @@ var options = {
         search: 'customStardogResultset',
         count: 'stardogMeta',
         histogram: 'stardogHistogram',
-        textmatch: 'stardogFulltextPart'
-
+        textmatch: 'customStardogFulltextPart'
       }
     },
     'https://query.wikidata.org/sparql': {
@@ -24,7 +23,8 @@ var options = {
     }
   },
   queries: {
-    customStardogResultset: document.getElementById('custom-stardog-resultset.sparql').innerHTML
+    customStardogResultset: document.getElementById('custom-stardog-resultset.sparql').innerHTML,
+    customStardogFulltextPart: document.getElementById('custom-stardog-fulltext-part.sparql').innerHTML
   },
   plugins: [
     new Zack.Histogram({

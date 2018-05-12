@@ -1,6 +1,6 @@
 {
   "baseConfig": "trifid:config-sparql.json",
-  "sparqlEndpointUrl": "https://lindas-data.ch:8443/alod/query",
+  "sparqlEndpointUrl": "http://data.zazuko.com/alod-legacy/query",
   "sparqlEndpointAuthentication": {
     "user": "public",
     "password": "public"
