@@ -3,15 +3,25 @@ image: docker:latest
 services:
   - docker:dind
 
-build:
+stages:
+  - build
+  - deploy
+
+build_web:
   stage: build
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    # build web image
     - docker build --pull -t "$CI_REGISTRY_IMAGE/web" -f Dockerfile.web .
     - docker push "$CI_REGISTRY_IMAGE/web"
     - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
     - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+  only:
+    - tags
+
+build_varnish:
+  stage: build
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     # build varnish image
     - docker build --pull -t "$CI_REGISTRY_IMAGE/varnish" -f Dockerfile.varnish .
     - docker push "$CI_REGISTRY_IMAGE/varnish"
@@ -20,11 +30,18 @@ build:
   only:
     - tags
 
-deploy:
+deploy_web:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
     - upgrade --environment default --stack alod-ch --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
+  only:
+    - tags
+
+deploy_varnish:
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
     - upgrade --environment default --stack alod-ch --service varnish --new-image $CI_REGISTRY_IMAGE/varnish:$CI_COMMIT_REF_NAME
   only:
     - tags
