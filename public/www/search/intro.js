@@ -16,8 +16,7 @@ Intro.prototype.init = function (app) {
   this.tour.init()
 
   document.getElementById('zack-intro').onclick = function () {
-    self.tour.setCurrentStep(0)
-    self.tour.start(true)
+    self.tour.restart()
   }
 }
 
