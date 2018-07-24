@@ -6,8 +6,8 @@
 # new 4.0 format.
 vcl 4.0;
 
-import std;
-import bodyaccess;
+#import std;
+#import bodyaccess;
 
 backend alod {
     .host = "alod_web";
@@ -19,21 +19,21 @@ sub vcl_recv {
     #
     # Typically you clean up the request here, removing cookies you don't need,
     # rewriting the request, etc.
-    unset req.http.X-Body-Len;
+#    unset req.http.X-Body-Len;
 
     set req.http.X-Forwarded-Port = "80";
 
     set req.backend_hint = alod;
 
-  if (req.method == "POST" && req.url ~ "/query$") {
-      std.log("Will cache POST for: " + req.host + req.url);
-      std.cache_req_body(500KB);
-      set req.http.X-Body-Len = bodyaccess.len_req_body();
-      if (req.http.X-Body-Len == "-1") {
-          return(pass);
-      }
-      return (hash);
-  }
+#  if (req.method == "POST" && req.url ~ "/query$") {
+#      std.log("Will cache POST for: " + req.host + req.url);
+#      std.cache_req_body(500KB);
+#      set req.http.X-Body-Len = bodyaccess.len_req_body();
+#      if (req.http.X-Body-Len == "-1") {
+#          return(pass);
+#      }
+#      return (hash);
+#  }
 
 }
 
@@ -59,17 +59,17 @@ sub vcl_synth {
     }
 }
 
-sub vcl_hash {
-    # To cache POST and PUT requests
-    if (req.http.X-Body-Len) {
-        bodyaccess.hash_req_body();
-    } else {
-        hash_data("");
-    }
-}
-
-sub vcl_backend_fetch {
-    if (bereq.http.X-Body-Len) {
-        set bereq.method = "POST";
-    }
-}
+#sub vcl_hash {
+#    # To cache POST and PUT requests
+#    if (req.http.X-Body-Len) {
+#        bodyaccess.hash_req_body();
+#    } else {
+#        hash_data("");
+#    }
+#}
+#
+#sub vcl_backend_fetch {
+#    if (bereq.http.X-Body-Len) {
+#        set bereq.method = "POST";
+#    }
+#}
