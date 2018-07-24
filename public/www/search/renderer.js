@@ -21,7 +21,7 @@ function getHierarchy (graph, subject) {
     level: level.object.toString()
   }]
 
-  var relation = graph.match(subject, 'http://purl.org/dc/terms/relation').toArray().shift()
+  var relation = graph.match(subject, 'http://example.org/relation').toArray().shift()
 
   if (relation) {
     hierarchy = getHierarchy(graph, relation.object).concat(hierarchy)

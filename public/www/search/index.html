@@ -206,18 +206,59 @@ PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#>
 
 CONSTRUCT {
+  # results from search
   :query :result ?sub .
   ?sub a :resultItem .
+  # available triples
   ?sub ?pred ?obj .
+
+#  ?sub <http://example.org/relation> ?sub1 .
+#  ?sub1 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level1 .
+#  ?sub1 <http://www.ica.org/standards/RiC/ontology#title> ?title1 .
+#  ?sub1 <http://example.org/relation> ?sub2 .
+#
+#  ?sub2 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level2 .
+#  ?sub2 <http://www.ica.org/standards/RiC/ontology#title> ?title2 .
+#  ?sub2 <http://example.org/relation> ?sub3 .
+#
+#  ?sub3 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level3 .
+#  ?sub3 <http://www.ica.org/standards/RiC/ontology#title> ?title3 .
+#  ?sub3 <http://example.org/relation> ?sub4 .
+#
+#  ?sub4 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level4 .
+#  ?sub4 <http://www.ica.org/standards/RiC/ontology#title> ?title4 .
+#  ?sub4 <http://example.org/relation> ?sub5 .
+#
+#  ?sub5 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level5 .
+#  ?sub5 <http://www.ica.org/standards/RiC/ontology#title> ?title5 .
+#  ?sub5 <http://example.org/relation> ?sub6 .
+#
+#  ?sub6 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level6 .
+#  ?sub6 <http://www.ica.org/standards/RiC/ontology#title> ?title6 .
+#  ?sub6 <http://example.org/relation> ?sub7 .
+#
+#  ?sub7 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level7 .
+#  ?sub7 <http://www.ica.org/standards/RiC/ontology#title> ?title7 .
+#  ?sub7 <http://example.org/relation> ?sub8 .
+#
+#  ?sub8 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level8 .
+#  ?sub8 <http://www.ica.org/standards/RiC/ontology#title> ?title8 .
+#  ?sub8 <http://example.org/relation> ?sub9 .
+#
+#  ?sub9 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level9 .
+#  ?sub9 <http://www.ica.org/standards/RiC/ontology#title> ?title9 .
+
+
   ?sub :score ?totalScore .
 } WHERE {
   {
+    # result set ordered by IntervalStarts
     SELECT ?sub ?totalScore WHERE {
       ${textmatch}
       ${filters}
 
       OPTIONAL {
-        ?sub <http://www.w3.org/2006/time#hiddenIntervalStarts> ?start .
+        ?sub <http://data.alod.ch/alod/time/hiddenIntervalStarts> ?start .
       }
     }
     ORDER BY DESC(?start)
@@ -226,6 +267,53 @@ CONSTRUCT {
   }
 
   ?sub ?pred ?obj .
+
+  # get hierarchy of resource
+#  OPTIONAL {
+#    ?sub <http://example.org/relation> ?sub1 .
+#    ?sub1 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level1 .
+#    ?sub1 <http://www.ica.org/standards/RiC/ontology#title> ?title1 .
+#    OPTIONAL {
+#      ?sub1 <http://example.org/relation> ?sub2 .
+#      ?sub2 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level2 .
+#      ?sub2 <http://www.ica.org/standards/RiC/ontology#title> ?title2 .
+#      OPTIONAL {
+#        ?sub2 <http://example.org/relation> ?sub3 .
+#        ?sub3 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level3 .
+#        ?sub3 <http://www.ica.org/standards/RiC/ontology#title> ?title3 .
+#        OPTIONAL {
+#          ?sub3 <http://example.org/relation> ?sub4 .
+#          ?sub4 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level4 .
+#          ?sub4 <http://www.ica.org/standards/RiC/ontology#title> ?title4 .
+#          OPTIONAL {
+#            ?sub4 <http://example.org/relation> ?sub5 .
+#            ?sub5 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level5 .
+#            ?sub5 <http://www.ica.org/standards/RiC/ontology#title> ?title5 .
+#            OPTIONAL {
+#              ?sub5 <http://example.org/relation> ?sub6 .
+#              ?sub6 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level6 .
+#              ?sub6 <http://www.ica.org/standards/RiC/ontology#title> ?title6 .
+#              OPTIONAL {
+#                ?sub6 <http://example.org/relation> ?sub7 .
+#                ?sub7 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level7 .
+#                ?sub7 <http://www.ica.org/standards/RiC/ontology#title> ?title7 .
+#                OPTIONAL {
+#                  ?sub7 <http://example.org/relation> ?sub8 .
+#                  ?sub8 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level8 .
+#                  ?sub8 <http://www.ica.org/standards/RiC/ontology#title> ?title8 .
+#                  OPTIONAL {
+#                    ?sub8 <http://example.org/relation> ?sub9 .
+#                    ?sub9 <http://www.ica.org/standards/RiC/ontology#recordSetType> ?level9 .
+#                    ?sub9 <http://www.ica.org/standards/RiC/ontology#title> ?title9 .
+#                  }
+#                }
+#              }
+#            }
+#          }
+#        }
+#      }
+#    }
+#  }
 
 }
 </script>
