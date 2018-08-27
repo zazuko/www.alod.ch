@@ -39,6 +39,7 @@ renderer.init = function (metadata, options) {
 }
 
 renderer.renderResult = function (page, subject) {
+  var host = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '')
   var rendering = ''
   var hierarchy = getHierarchy(page, subject)
   var hierarchyString = ''
@@ -99,7 +100,7 @@ renderer.renderResult = function (page, subject) {
   }
 
   var referenceString = ''
-  var referenceCode = page.match(subject, 'http://data.alod.ch/alod/property/referenceCode').toArray().shift()
+  var referenceCode = page.match(subject, host + '/alod/property/referenceCode').toArray().shift()
   if (referenceCode) {
     referenceString = referenceCode.object.toString()
   } else {
@@ -120,7 +121,7 @@ renderer.renderResult = function (page, subject) {
   //      ' class="filterable" onclick="app.search.addFilter(this)">' + maintenanceAgencyCode.object.toString() + '</div>'
   //  }
 
-  var conceptTags = page.match(subject, 'http://data.alod.ch/alod/conceptTag').toArray()
+  var conceptTags = page.match(subject, host + '/alod/conceptTag').toArray()
   var conceptTagDivs = '<div class="result-tags">'
   if (conceptTags) {
     conceptTags.forEach(function (tag) {
@@ -154,7 +155,7 @@ renderer.renderResult = function (page, subject) {
     }
   }
 
-  var physicalForm = page.match(subject, 'http://data.alod.ch/alod/physicalForm').toArray().shift()
+  var physicalForm = page.match(subject, host + '/alod/physicalForm').toArray().shift()
   var physical = ''
   if (physicalForm) {
     physical = '<span>' + physicalForm.object.toString() + '</span>'
