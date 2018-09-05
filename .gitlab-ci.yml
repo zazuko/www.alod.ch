@@ -34,7 +34,7 @@ deploy_web:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
-    - upgrade --environment default --stack integ-alod-ch --service web --new-image $CI_REGISTRY_IMAGE/test/web:$CI_COMMIT_REF_NAME
+    - upgrade --environment default --stack bar-alod-ch --service web --new-image $CI_REGISTRY_IMAGE/test/web:$CI_COMMIT_REF_NAME
   only:
     - tags
 
@@ -42,6 +42,6 @@ deploy_varnish:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
-    - upgrade --environment default --stack integ-alod-ch --service varnish --new-image $CI_REGISTRY_IMAGE/test/varnish:$CI_COMMIT_REF_NAME
+    - upgrade --environment default --stack bar-alod-ch --service varnish --new-image $CI_REGISTRY_IMAGE/test/varnish:$CI_COMMIT_REF_NAME
   only:
     - tags
