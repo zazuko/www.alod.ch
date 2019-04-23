@@ -12,7 +12,7 @@ var options = {
       queries: {
         search: 'customStardogResultset',
         count: 'stardogMeta',
-        histogram: 'stardogHistogram',
+        histogram: 'customStardogHistogram',
         textmatch: 'customStardogFulltextPart'
       }
     },
@@ -24,7 +24,8 @@ var options = {
   },
   queries: {
     customStardogResultset: document.getElementById('custom-stardog-resultset.sparql').innerHTML,
-    customStardogFulltextPart: document.getElementById('custom-stardog-fulltext-part.sparql').innerHTML
+    customStardogFulltextPart: document.getElementById('custom-stardog-fulltext-part.sparql').innerHTML,
+    customStardogHistogram: document.getElementById('custom-stardog-histogram.sparql').innerHTML
   },
   plugins: [
     new Zack.Histogram({

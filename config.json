@@ -18,13 +18,17 @@
       "path": "/",
       "folder": "cwd:public/data"
     },
-    "wwwAlodFiles": {
-      "path": "/",
-      "folder": "cwd:public/www"
+    "wwwAlodFiles2": {
+      "path": "/search/",
+      "folder": "cwd:public/www/search/"
     },
     "zackFiles": {
       "path": "/search/",
-      "folder":  "cwd:node_modules/zack-search/dist"
+      "folder":  "cwd:node_modules/zack-search/dist/"
+    },
+    "wwwAlodFiles": {
+      "path": "/",
+      "folder": "cwd:public/www"
     }
   },
   "hydraBox": {
