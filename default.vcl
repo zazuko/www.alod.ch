@@ -1,25 +1,48 @@
-#
-# See the VCL chapters in the Users Guide at https://www.varnish-cache.org/docs/
-# and https://www.varnish-cache.org/trac/wiki/VCLExamples for more examples.
-
-# Marker to tell the VCL compiler that this VCL has been adapted to the
-# new 4.0 format.
+# partially based on https://docs.varnish-software.com/tutorials/caching-post-requests/
 vcl 4.0;
 
-backend alod {
+import std;
+import bodyaccess;
+
+backend express {
     .host = "alod_web";
     .port = "8080";
+
+    # backend req that are proxied to the sparql endpoint can take a long time
+    .connect_timeout = 10s;
+    .first_byte_timeout = 2m; 
+    .between_bytes_timeout = 5s;
 }
 
 sub vcl_recv {
+    # cache POST requests
+    unset req.http.X-Body-Len;
+
     # Happens before we check if we have this in cache already.
-    #
-    # Typically you clean up the request here, removing cookies you don't need,
-    # rewriting the request, etc.
 
     set req.http.X-Forwarded-Port = "80";
+    set req.backend_hint = express;
 
-    set req.backend_hint = alod;
+    // pass through URLs ending with ?nocache
+    if (req.url ~ "\?nocache$") {
+        set req.url = regsub(req.url, "\?$", "");
+        return (pass);
+    }
+
+    # only cache /query
+    if (req.url !~ "^/query") {
+        return (pass);
+    }
+
+    if (req.method == "POST" && req.url ~ "^/query") {
+        std.log("Will cache POST for: " + req.http.host + req.url);
+        std.cache_req_body(500KB);
+        set req.http.X-Body-Len = bodyaccess.len_req_body();
+        if (req.http.X-Body-Len == "-1") {
+            return(synth(400, "The request body size exceeds the limit"));
+        }
+        return (hash);
+    }
 }
 
 sub vcl_backend_response {
@@ -27,6 +50,7 @@ sub vcl_backend_response {
     #
     # Here you clean the response headers, removing silly Set-Cookie headers
     # and other mistakes your backend does.
+    set beresp.ttl = 12h;
 }
 
 sub vcl_deliver {
@@ -41,5 +65,20 @@ sub vcl_synth {
         set resp.http.location = resp.reason;
         set resp.reason = "Moved";
         return (deliver);
+    }
+}
+
+sub vcl_hash {
+    # To cache POST and PUT requests
+    if (req.http.X-Body-Len) {
+        bodyaccess.hash_req_body();
+    } else {
+        hash_data("");
+    }
+}
+
+sub vcl_backend_fetch {
+    if (bereq.http.X-Body-Len) {
+        set bereq.method = "POST";
     }
 }
