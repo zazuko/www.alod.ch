@@ -8,7 +8,7 @@
     "zack-search": "git://github.com/zazuko/zack-search.git#master"
   },
   "devDependencies": {},
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "start": "trifid --config config.json",
     "start-local": "trifid --config config.local.json"
