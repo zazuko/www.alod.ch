@@ -1,0 +1,184 @@
+apiVersion: v1
+data:
+  default.vcl: "# partially based on https://docs.varnish-software.com/tutorials/caching-post-requests/\nvcl
+    4.0;\n\nimport std;\nimport bodyaccess;\n\nbackend express {\n    .host = \"server\";\n
+    \   .port = \"80\";\n\n    # backend req that are proxied to the sparql endpoint
+    can take a long time\n    .connect_timeout = 10s;\n    .first_byte_timeout = 2m;
+    \n    .between_bytes_timeout = 5s;\n}\n\nsub vcl_recv {\n    # cache POST requests\n
+    \   unset req.http.X-Body-Len;\n\n    # Happens before we check if we have this
+    in cache already.\n\n    set req.http.X-Forwarded-Port = \"80\";\n    set req.backend_hint
+    = express;\n\n    // pass through URLs ending with ?nocache\n    if (req.url ~
+    \"\\?nocache$\") {\n        set req.url = regsub(req.url, \"\\?$\", \"\");\n        return
+    (pass);\n    }\n\n    # only cache /query\n    if (req.url !~ \"^/query\") {\n
+    \       return (pass);\n    }\n\n    if (req.method == \"POST\" && req.url ~ \"^/query\")
+    {\n        std.log(\"Will cache POST for: \" + req.http.host + req.url);\n        std.cache_req_body(500KB);\n
+    \       set req.http.X-Body-Len = bodyaccess.len_req_body();\n        if (req.http.X-Body-Len
+    == \"-1\") {\n            return(synth(400, \"The request body size exceeds the
+    limit\"));\n        }\n        return (hash);\n    }\n}\n\nsub vcl_backend_response
+    {\n    # Happens after we have read the response headers from the backend.\n    #\n
+    \   # Here you clean the response headers, removing silly Set-Cookie headers\n
+    \   # and other mistakes your backend does.\n    set beresp.ttl = 12h;\n}\n\nsub
+    vcl_deliver {\n    # Happens when we have all the pieces we need, and are about
+    to send the\n    # response to the client.\n    #\n    # You can do accounting
+    or modifying the final object here.\n}\n\nsub vcl_synth {\n    if (resp.status
+    == 301 || resp.status == 302) {\n        set resp.http.location = resp.reason;\n
+    \       set resp.reason = \"Moved\";\n        return (deliver);\n    }\n}\n\nsub
+    vcl_hash {\n    # To cache POST and PUT requests\n    if (req.http.X-Body-Len)
+    {\n        bodyaccess.hash_req_body();\n    } else {\n        hash_data(\"\");\n
+    \   }\n}\n\nsub vcl_backend_fetch {\n    if (bereq.http.X-Body-Len) {\n        set
+    bereq.method = \"POST\";\n    }\n}\n"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: varnish
+    app.kubernetes.io/name: alod-ch
+  name: varnish-config-k47cddmkt2
+  namespace: alod-ch
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: alod-ch
+  name: server
+  namespace: alod-ch
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: alod-ch
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: varnish
+    app.kubernetes.io/name: alod-ch
+  name: varnish
+  namespace: alod-ch
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: varnish
+    app.kubernetes.io/name: alod-ch
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: alod-ch
+  name: server
+  namespace: alod-ch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: alod-ch
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: alod-ch
+    spec:
+      containers:
+      - image: alod-ch
+        imagePullPolicy: IfNotPresent
+        name: alod-ch
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+      securityContext:
+        runAsGroup: 65534
+        runAsUser: 65534
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: varnish
+    app.kubernetes.io/name: alod-ch
+  name: varnish
+  namespace: alod-ch
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: varnish
+      app.kubernetes.io/name: alod-ch
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: varnish
+        app.kubernetes.io/name: alod-ch
+    spec:
+      containers:
+      - env:
+        - name: VCL_CONFIG
+          value: /config/default.vcl
+        image: docker.io/zazukoians/varnish:5.2.1
+        imagePullPolicy: IfNotPresent
+        name: alod-ch
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: varnish-config-volume
+      volumes:
+      - configMap:
+          name: varnish-config-k47cddmkt2
+        name: varnish-config-volume
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: alod-ch.zazukoians.org,isil-ch.zazukoians.org
+  labels:
+    app.kubernetes.io/name: alod-ch
+  name: alod-ch
+  namespace: alod-ch
+spec:
+  rules:
+  - host: alod.ch
+    http:
+      paths:
+      - backend:
+          serviceName: varnish
+          servicePort: 80
+        path: /
+  - host: isil.ch
+    http:
+      paths:
+      - backend:
+          serviceName: varnish
+          servicePort: 80
+        path: /
+  - host: '*.alod.ch'
+    http:
+      paths:
+      - backend:
+          serviceName: varnish
+          servicePort: 80
+        path: /
+  - host: '*.isil.ch'
+    http:
+      paths:
+      - backend:
+          serviceName: varnish
+          servicePort: 80
+        path: /
