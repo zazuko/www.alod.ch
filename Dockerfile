@@ -8,17 +8,20 @@ RUN npm ci
 # Second step
 FROM node:lts-alpine
 
-RUN npm install -g pm2
-
-RUN mkdir -p /opt/trifid
-WORKDIR /opt/trifid
+RUN mkdir -p /app
+WORKDIR /app
 COPY --from=builder /src/node_modules/ ./node_modules
-ADD . /opt/trifid
+ADD . /app
 
 ENV HOST 0.0.0.0
-
 USER nobody:nobody
 
-CMD pm2-docker start npm -- start
+ENTRYPOINT []
+
+# Using npm scripts for running the app allows two things:
+#  - Handle signals correctly (Node does not like to be PID1)
+#  - Let Skaffold detect it's a node app so it can attach the Node debugger
+CMD ["npm", "run", "start"]
 
 EXPOSE 8080
+HEALTHCHECK CMD wget -q -O- http://localhost:8080/health
