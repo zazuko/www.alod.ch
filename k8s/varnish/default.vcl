@@ -5,8 +5,8 @@ import std;
 import bodyaccess;
 
 backend express {
-    .host = "alod_web";
-    .port = "8080";
+    .host = "server";
+    .port = "80";
 
     # backend req that are proxied to the sparql endpoint can take a long time
     .connect_timeout = 10s;

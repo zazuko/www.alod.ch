@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: varnish
+spec:
+  template:
+    spec:
+      volumes:
+      - name: varnish-config-volume
+        configMap:
+          name: varnish-config
+
+      containers:
+      - name: alod-ch
+        image: "docker.io/zazukoians/varnish:5.2.1"
+        imagePullPolicy: IfNotPresent
+
+        env:
+        - name: VCL_CONFIG
+          value: /config/default.vcl
+
+        volumeMounts:
+          - name: varnish-config-volume
+            mountPath: /config
+
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
