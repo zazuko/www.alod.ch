@@ -13,21 +13,63 @@ spec:
         backend:
           serviceName: varnish
           servicePort: 80
+  - host: data.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: data.bs.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: data.ge.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: data.helveticarchives.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: data.ne.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: data.vs.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: test.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
+  - host: www.alod.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
   - host: isil.ch
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: varnish
-          servicePort: 80
-  - host: "*.alod.ch"
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: varnish
-          servicePort: 80
-  - host: "*.isil.ch"
     http:
       paths:
       - path: /
