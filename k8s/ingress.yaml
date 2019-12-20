@@ -76,3 +76,10 @@ spec:
         backend:
           serviceName: varnish
           servicePort: 80
+  - host: data.staatsarchiv-bs.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: varnish
+          servicePort: 80
