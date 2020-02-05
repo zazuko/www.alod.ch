@@ -4,6 +4,7 @@ metadata:
   name: alod-ch
   annotations:
     external-dns.alpha.kubernetes.io/hostname: alod-ch.zazukoians.org,isil-ch.zazukoians.org
+    traefik.ingress.kubernetes.io/frontend-entry-points: http
 spec:
   rules:
   - host: alod.ch
