@@ -4,8 +4,24 @@ metadata:
   name: alod-ch
   annotations:
     external-dns.alpha.kubernetes.io/hostname: alod-ch.zazukoians.org,isil-ch.zazukoians.org
-    traefik.ingress.kubernetes.io/frontend-entry-points: http
+    kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/redirect-regex: "^https://(.*)"
+    traefik.ingress.kubernetes.io/redirect-replacement: "http://$1"
 spec:
+  tls:
+  - secretName: alod-ch-cert
+    hosts:
+    - alod.ch
+    - data.alod.ch
+    - data.bs.alod.ch
+    - data.ge.alod.ch
+    - data.helveticarchives.alod.ch
+    - data.ne.alod.ch
+    - data.vs.alod.ch
+    - test.alod.ch
+    - www.alod.ch
+    - isil.ch
+    - data.staatsarchiv-bs.ch
   rules:
   - host: alod.ch
     http:
