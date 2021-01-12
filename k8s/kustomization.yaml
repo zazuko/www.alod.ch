@@ -1,13 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: alod-ch
-resources:
-  - ingress.yaml
-
 commonLabels:
   app.kubernetes.io/name: alod-ch
 
-bases:
-  - server
-  - varnish
+namespace: alod-ch
+
+resources:
+  - ./server/
+  - ./varnish/
+  - ingress.yaml
