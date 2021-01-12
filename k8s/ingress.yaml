@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: alod-ch
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: alod-ch.zazukoians.org,isil-ch.zazukoians.org
+    external-dns.alpha.kubernetes.io/hostname: alod-ch.zazuko.net,isil-ch.zazuko.net
     kubernetes.io/tls-acme: "true"
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
@@ -20,7 +20,10 @@ spec:
         - test.alod.ch
         - www.alod.ch
         - isil.ch
+    - secretName: data-staatsarchiv-bs-ch-cert
+      hosts:
         - data.staatsarchiv-bs.ch
+
   rules:
     - host: alod.ch
       http:
