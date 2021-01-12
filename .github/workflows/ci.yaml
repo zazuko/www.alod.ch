@@ -46,6 +46,10 @@ jobs:
     needs:
       - docker
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -58,12 +62,8 @@ jobs:
           k8s-secret: ${{ secrets.K8S_SECRET }}
 
       - name: Run Kubernetes tools
-        uses: stefanprodan/kube-tools@v1
-        with:
-          kubectl: 1.19.4
-          kustomize: 3.8.7
-          command: |
-            cd k8s/
-            kustomize edit set image "docker.io/zazuko/alod-ch:pipeline-${GITHUB_RUN_ID}"
-            kustomize build | tee manifest.yaml
-            kubectl apply -f manifest.yaml
+        run: |
+          cd k8s/
+          kustomize edit set image "docker.io/zazuko/alod-ch:pipeline-${GITHUB_RUN_ID}"
+          kustomize build | tee manifest.yaml
+          kubectl apply -f manifest.yaml
