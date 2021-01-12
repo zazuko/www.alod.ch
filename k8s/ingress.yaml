@@ -5,8 +5,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: alod-ch.zazukoians.org,isil-ch.zazukoians.org
     kubernetes.io/tls-acme: "true"
-    traefik.ingress.kubernetes.io/redirect-regex: "^https://(.*)"
-    traefik.ingress.kubernetes.io/redirect-replacement: "http://$1"
+    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
     - secretName: alod-ch-cert
