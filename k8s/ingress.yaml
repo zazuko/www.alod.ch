@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: alod-ch
@@ -29,76 +29,109 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.bs.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.ge.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.helveticarchives.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.ne.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.vs.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: test.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: www.alod.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: isil.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
     - host: data.staatsarchiv-bs.ch
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: varnish
-              servicePort: 80
+              service:
+                name: varnish
+                port:
+                  number: 80
