@@ -5,7 +5,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: alod-ch.zazuko.net,isil-ch.zazuko.net
     kubernetes.io/tls-acme: "true"
-    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
     - secretName: alod-ch-cert
