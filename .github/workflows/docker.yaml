@@ -1,0 +1,39 @@
+name: Build and push Docker image
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "v*.*.*"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'zazuko/www.alod.ch' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker meta
+        uses: zazuko/action-docker-meta@main
+        id: docker_meta
+        with:
+          images: docker.io/zazuko/alod-ch
+
+      - name: Build and push Docker images
+        id: docker_build
+        uses: docker/build-push-action@v2.2.2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
