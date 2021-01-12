@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: server
 spec:
-  replicas: 1
+  replicas: 2
+
   template:
     spec:
       securityContext:
@@ -25,3 +26,13 @@ spec:
             httpGet:
               path: /health
               port: http
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            # This makes sure the pods are not all scheduled on the same node
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels: {}
+                topologyKey: "kubernetes.io/hostname"
