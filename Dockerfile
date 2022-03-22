@@ -1,12 +1,12 @@
 # First step
-FROM node:12 AS builder
+FROM node:16 AS builder
 
 WORKDIR /src
 ADD package.json package-lock.json ./
 RUN npm ci
 
 # Second step
-FROM node:12-alpine
+FROM node:16-alpine
 
 RUN mkdir -p /app
 WORKDIR /app
